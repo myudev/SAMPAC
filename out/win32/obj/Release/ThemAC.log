@@ -1,41 +1,48 @@
-﻿Der Buildvorgang wurde am 29.04.2014 15:58:11 gestartet.
-     1>Projekt "C:\Users\trollin\Documents\sampac_git\AC\ThemAC.vcxproj" auf Knoten "2", Build Ziel(e).
+﻿Der Buildvorgang wurde am 11.06.2014 21:28:02 gestartet.
+     1>Projekt "C:\Users\trollin\Documents\GitHub\SAMPAC\ThemAC.vcxproj" auf Knoten "2", Build Ziel(e).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\CL.exe /c /Iinclude /Zi /nologo /W3 /WX /O2 /Oy- /GL /D BOOST_ALL_NO_LIB /D BOOST_CHRONO_HEADER_ONLY /D NDEBUG /GF /Gm- /EHsc /MD /GS- /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Fo"out\win32\obj\Release\\lib\sampgdk\src\sdk\\" /Fd"out\win32\obj\Release\vc90.pdb" /Gd /TP /analyze- /errorReport:prompt lib\sampgdk\src\sdk\plugin.cpp
-         plugin.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"out\win32\Release\Them-AC.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"ThemAC.def" /MANIFEST /ManifestFile:"out\win32\obj\Release\Them-AC.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /PDB:"C:\Users\trollin\Documents\sampac_git\AC\out\win32\Release\Them-AC.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"out\win32\Release\Them-AC.lib" /MACHINE:X86 /DLL out\win32\obj\Release\ThemAC.res
-         out\win32\obj\Release\\lib\boost\system\src\\error_code.obj
-         out\win32\obj\Release\\lib\sampgdk\src\\amxhooks.obj
-         out\win32\obj\Release\\lib\sampgdk\src\\a_objects.obj
-         out\win32\obj\Release\\lib\sampgdk\src\\a_players.obj
-         out\win32\obj\Release\\lib\sampgdk\src\\a_samp.obj
-         out\win32\obj\Release\\lib\sampgdk\src\\a_vehicles.obj
-         "out\win32\obj\Release\\lib\sampgdk\src\\core-win32.obj"
-         out\win32\obj\Release\\lib\sampgdk\src\\core.obj
-         out\win32\obj\Release\\lib\sampgdk\src\\fakeamx.obj
-         "out\win32\obj\Release\\lib\sampgdk\src\\hook-win32.obj"
-         out\win32\obj\Release\\lib\sampgdk\src\\hook.obj
-         out\win32\obj\Release\\lib\sampgdk\src\\natives.obj
-         "out\win32\obj\Release\\lib\sampgdk\src\\timers-win32.obj"
-         out\win32\obj\Release\\lib\sampgdk\src\\timers.obj
-         out\win32\obj\Release\\lib\sampgdk\src\\version.obj
-         out\win32\obj\Release\\lib\sampgdk\src\sdk\\plugin.obj
-         out\win32\obj\Release\\src\\CAntiCheat.obj
-         out\win32\obj\Release\\src\\CNatives.obj
-         out\win32\obj\Release\\src\\CPlayer.obj
-         out\win32\obj\Release\\src\\CVehicle.obj
-         out\win32\obj\Release\\src\\main.obj
-            Creating library out\win32\Release\Them-AC.lib and object out\win32\Release\Them-AC.exp
-     1>Them-AC.exp : warning LNK4070: /OUT:SAMPAC.dll directive in .EXP differs from output filename 'out\win32\Release\Them-AC.dll'; ignoring directive
-         Generating code
-         Finished generating code
-     1>Them-AC.exp : warning LNK4070: /OUT:SAMPAC.dll directive in .EXP differs from output filename 'out\win32\Release\Them-AC.dll'; ignoring directive
-         ThemAC.vcxproj -> C:\Users\trollin\Documents\sampac_git\AC\out\win32\Release\Them-AC.dll
-       Manifest:
-         C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\mt.exe /nologo /verbose /outputresource:"out\win32\Release\Them-AC.dll;#2" /manifest "out\win32\obj\Release\Them-AC.dll.intermediate.manifest"
-     1>Die Erstellung des Projekts "C:\Users\trollin\Documents\sampac_git\AC\ThemAC.vcxproj" ist abgeschlossen, Build Ziel(e).
+         C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\CL.exe /c /Iinclude /Zi /nologo /W3 /WX /O2 /Oy- /GL /D BOOST_ALL_NO_LIB /D BOOST_CHRONO_HEADER_ONLY /D NDEBUG /GF /Gm- /EHsc /MD /GS- /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Fo"out\win32\obj\Release\\src\\" /Fd"out\win32\obj\Release\vc90.pdb" /Gd /TP /analyze- /errorReport:prompt src\CAntiCheat.cpp src\CNatives.cpp src\CPlayer.cpp src\CSampServer.cpp src\CVehicle.cpp src\main.cpp
+         CAntiCheat.cpp
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): error C2220: warning treated as error - no 'object' file generated
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): warning C4161: #pragma pack(pop...) : more pops than pushes
+     1>C:\Users\trollin\Documents\GitHub\SAMPAC\include\sampgdk/a_samp.h(28): warning C4005: 'MAX_PLAYERS' : macro redefinition
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(44) : see previous definition of 'MAX_PLAYERS'
+     1>C:\Users\trollin\Documents\GitHub\SAMPAC\include\sampgdk/a_samp.h(29): warning C4005: 'MAX_VEHICLES' : macro redefinition
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(45) : see previous definition of 'MAX_VEHICLES'
+     1>C:\Users\trollin\Documents\GitHub\SAMPAC\include\sampgdk/a_samp.h(32): warning C4005: 'NO_TEAM' : macro redefinition
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(47) : see previous definition of 'NO_TEAM'
+         CNatives.cpp
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): error C2220: warning treated as error - no 'object' file generated
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): warning C4161: #pragma pack(pop...) : more pops than pushes
+         CPlayer.cpp
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): error C2220: warning treated as error - no 'object' file generated
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): warning C4161: #pragma pack(pop...) : more pops than pushes
+     1>C:\Users\trollin\Documents\GitHub\SAMPAC\include\sampgdk/a_samp.h(28): warning C4005: 'MAX_PLAYERS' : macro redefinition
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(44) : see previous definition of 'MAX_PLAYERS'
+     1>C:\Users\trollin\Documents\GitHub\SAMPAC\include\sampgdk/a_samp.h(29): warning C4005: 'MAX_VEHICLES' : macro redefinition
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(45) : see previous definition of 'MAX_VEHICLES'
+     1>C:\Users\trollin\Documents\GitHub\SAMPAC\include\sampgdk/a_samp.h(32): warning C4005: 'NO_TEAM' : macro redefinition
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(47) : see previous definition of 'NO_TEAM'
+         CSampServer.cpp
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): error C2220: warning treated as error - no 'object' file generated
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): warning C4161: #pragma pack(pop...) : more pops than pushes
+     1>src\CSampServer.cpp(68): error C2248: 'CSAMPPlayerPool::pPlayer' : cannot access private member declared in class 'CSAMPPlayerPool'
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(212) : see declaration of 'CSAMPPlayerPool::pPlayer'
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(209) : see declaration of 'CSAMPPlayerPool'
+         CVehicle.cpp
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): error C2220: warning treated as error - no 'object' file generated
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): warning C4161: #pragma pack(pop...) : more pops than pushes
+     1>C:\Users\trollin\Documents\GitHub\SAMPAC\include\sampgdk/a_samp.h(28): warning C4005: 'MAX_PLAYERS' : macro redefinition
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(44) : see previous definition of 'MAX_PLAYERS'
+     1>C:\Users\trollin\Documents\GitHub\SAMPAC\include\sampgdk/a_samp.h(29): warning C4005: 'MAX_VEHICLES' : macro redefinition
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(45) : see previous definition of 'MAX_VEHICLES'
+     1>C:\Users\trollin\Documents\GitHub\SAMPAC\include\sampgdk/a_samp.h(32): warning C4005: 'NO_TEAM' : macro redefinition
+                 c:\users\trollin\documents\github\sampac\src\CSampServer.h(47) : see previous definition of 'NO_TEAM'
+         main.cpp
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): error C2220: warning treated as error - no 'object' file generated
+     1>c:\users\trollin\documents\github\sampac\src\CSampServer.h(232): warning C4161: #pragma pack(pop...) : more pops than pushes
+     1>Die Erstellung des Projekts "C:\Users\trollin\Documents\GitHub\SAMPAC\ThemAC.vcxproj" ist abgeschlossen, Build Ziel(e) -- FEHLER.
 
-Build erfolgreich.
+Fehler beim Buildvorgang.
 
-Verstrichene Zeit 00:00:01.64
+Verstrichene Zeit 00:00:08.41

@@ -1,3 +1,29 @@
+/*
+	PROJECT		<>	SA:MP Anticheat Plug-in
+	LICENSE		<>	See LICENSE in the top level directory.
+	AUTHOR(S)	<>	MyU (myudev0@gmail.com)
+	PURPOSE		<>  Providing datastructures for the internal SA:MP Server.
+
+
+	Copyright (C) 2014 SA:MP Anticheat Plug-in.
+
+	The Project is available on https://github.com/myudev/SAMPAC
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 #include "main.h"
 #include "CPlayer.h"
 #include <sampgdk/a_samp.h>
@@ -10,8 +36,13 @@ void CPlayer::SetPosition ( PLAYERID playerID, float fX, float fY, float fZ )
 
 void CPlayer::GetPosition ( PLAYERID playerID, float *fX, float *fY, float *fZ ) 
 {
-	if ( set.m_bSAMPHooks ) {
-		
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
+		CSAMPPlayer *player;
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	return logprintf("Error, structures may be incorrect contact the Author(s)");
+
+		*fX = player->vecPosition.fX;
+		*fY = player->vecPosition.fY;
+		*fZ = player->vecPosition.fZ;
 	} 
 	else { // Fallback SAMPGDK :'(
 		sampgdk_GetPlayerPos(playerID, fX, fY, fZ);
@@ -19,14 +50,19 @@ void CPlayer::GetPosition ( PLAYERID playerID, float *fX, float *fY, float *fZ )
 }
 
 void CPlayer::SetVelocity ( PLAYERID playerID, float fX, float fY, float fZ ) 
-{  // No Fallback to sampgdk, theres actually no way of position setting via. pure data
+{  // No Fallback to sampgdk, theres actually no way of position setting via. pure data (ok there kinda is)
 	sampgdk_SetPlayerVelocity(playerID, fX, fY, fZ);
 }
 
 void CPlayer::GetVelocity ( PLAYERID playerID, float *fX, float *fY, float *fZ ) 
 {
-	if ( set.m_bSAMPHooks ) {
-		
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
+		CSAMPPlayer *player;
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	return logprintf("Error, structures may be incorrect contact the Author(s)");
+
+		*fX = player->vecVelocity.fX;
+		*fY = player->vecVelocity.fY;
+		*fZ = player->vecVelocity.fZ;		
 	} 
 	else { // Fallback SAMPGDK :'(
 		sampgdk_GetPlayerVelocity(playerID, fX, fY, fZ);
@@ -35,8 +71,12 @@ void CPlayer::GetVelocity ( PLAYERID playerID, float *fX, float *fY, float *fZ )
 
 void CPlayer::GetWeaponData ( PLAYERID playerID, short sIndex, int *iWeap, int *iAmmo ) 
 { 
-	if ( set.m_bSAMPHooks ) {
-		
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
+		CSAMPPlayer *player;
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	return logprintf("Error, structures may be incorrect contact the Author(s)");
+
+		*iWeap = player->byteWeaponId[sIndex];
+		*iAmmo = player->wWeaponAmmo[sIndex];
 	} 
 	else { // Fallback SAMPGDK :'(
 		sampgdk_GetPlayerWeaponData(playerID, sIndex, iWeap, iAmmo);
@@ -46,7 +86,7 @@ void CPlayer::GetWeaponData ( PLAYERID playerID, short sIndex, int *iWeap, int *
 
 bool CPlayer::IsNPC ( PLAYERID playerID ) 
 { 
-	if ( set.m_bSAMPHooks ) {
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
 		return 0;
 	} 
 	else { // Fallback SAMPGDK :'(
@@ -58,7 +98,7 @@ bool CPlayer::IsNPC ( PLAYERID playerID )
 
 VEHICLEID CPlayer::GetVehicle ( PLAYERID playerID ) 
 { 
-	if ( set.m_bSAMPHooks ) {
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
 		return INVALID_VEHICLE_ID;	
 	} 
 	else { // Fallback SAMPGDK :'(
@@ -70,7 +110,7 @@ VEHICLEID CPlayer::GetVehicle ( PLAYERID playerID )
 
 int CPlayer::GetMoney ( PLAYERID playerID ) 
 { 
-	if ( set.m_bSAMPHooks ) {
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
 		return 0;
 	} 
 	else { // Fallback SAMPGDK :'(
@@ -82,7 +122,7 @@ int CPlayer::GetMoney ( PLAYERID playerID )
 
 void CPlayer::SetMoney ( PLAYERID playerID, int iMoney ) 
 { 
-	if ( set.m_bSAMPHooks ) {
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
 		
 	} 
 	else { // Fallback SAMPGDK :'(
@@ -94,7 +134,7 @@ void CPlayer::SetMoney ( PLAYERID playerID, int iMoney )
 
 int CPlayer::GetState ( PLAYERID playerID ) 
 { 
-	if ( set.m_bSAMPHooks ) {
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
 		return 0;
 	} 
 	else { // Fallback SAMPGDK :'(

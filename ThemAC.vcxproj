@@ -101,6 +101,7 @@
     <ClCompile Include="src\CAntiCheat.cpp" />
     <ClCompile Include="src\CNatives.cpp" />
     <ClCompile Include="src\CPlayer.cpp" />
+    <ClCompile Include="src\CSampServer.cpp" />
     <ClCompile Include="src\CVehicle.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
@@ -130,6 +131,7 @@
     <ClInclude Include="src\CNatives.h" />
     <ClInclude Include="src\CPlayer.h" />
     <ClInclude Include="src\CSamp.h" />
+    <ClInclude Include="src\CSampServer.h" />
     <ClInclude Include="src\CVehicle.h" />
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\typedef.h" />

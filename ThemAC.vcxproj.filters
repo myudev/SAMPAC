@@ -64,6 +64,9 @@
     <ClCompile Include="lib\sampgdk\src\sdk\plugin.cpp">
       <Filter>lib\sampgdk</Filter>
     </ClCompile>
+    <ClCompile Include="src\CSampServer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\boost\system\src\local_free_on_destruction.hpp">
@@ -149,6 +152,9 @@
     </ClInclude>
     <ClInclude Include="lib\sampgdk\src\sdk\plugin.h">
       <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSampServer.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
