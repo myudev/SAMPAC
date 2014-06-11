@@ -2,6 +2,8 @@
 #define _H_ANTICHEAT
 #include "typedef.h"
 
+
+#define SAMP_IS_VALID_PLAYERID(pid) ((pid < SAMP_MAX_PLAYERS && pid > -1)?true:false)
 #define MAX_WEAPS ( 55 )
 #define SAMP_MAX_PLAYERS	( 1000 )
 
@@ -46,7 +48,7 @@ namespace CAntiCheat {
 
 	void 	CarWarpCheck(PLAYERID playerID, NEWSTATE stateNEW);
 	void 	RapidPickupSpam(PLAYERID playerID, PICKUPID pickupID);
-
+	ePlayerData* GetPlayerByID(PLAYERID playerID);
 	// Hooked Things
 	cell AMX_NATIVE_CALL HookedGivePlayerWeapon( AMX* amx, cell* params );
 	cell AMX_NATIVE_CALL HookedResetPlayerWeapons( AMX* amx, cell* params );

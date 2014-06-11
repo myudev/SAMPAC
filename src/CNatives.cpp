@@ -52,7 +52,7 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_SetDetectionState(AMX *amx, cell *params)
 	return 1;
 }
 
-// Thanks Incognito for the technique
+// Thanks Incognito for the technique, meh.
 cell AMX_NATIVE_CALL CNatives::SAMPAC_CallbackHook(AMX *amx, cell *params)
 {
 	switch (static_cast<int>(params[1]))
@@ -67,7 +67,7 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_CallbackHook(AMX *amx, cell *params)
 		}
 		case SAMPAC_OPDC:
 		{
-			CHECK_PARAMS(3, "Streamer_CallbackHook");
+			CHECK_PARAMS(3, "SAMPAC_CallbackHook");
 			cell *playerid = NULL, *reason = NULL;
 			amx_GetAddr(amx, params[2], &playerid);
 			amx_GetAddr(amx, params[3], &reason);
@@ -76,7 +76,7 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_CallbackHook(AMX *amx, cell *params)
 		}
 		case SAMPAC_OPSC:
 		{
-			CHECK_PARAMS(4, "Streamer_CallbackHook");
+			CHECK_PARAMS(4, "SAMPAC_CallbackHook");
 
 			cell *playerid = NULL, *newstate = NULL, *oldstate = NULL;
 			amx_GetAddr(amx, params[2], &playerid);
@@ -87,7 +87,7 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_CallbackHook(AMX *amx, cell *params)
 		}
 		case SAMPAC_OPPP:
 		{
-			CHECK_PARAMS(3, "Streamer_CallbackHook");
+			CHECK_PARAMS(3, "SAMPAC_CallbackHook");
 
 			cell *playerid = NULL, *pickupid = NULL;
 			amx_GetAddr(amx, params[2], &playerid);

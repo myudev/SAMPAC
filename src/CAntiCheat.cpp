@@ -9,20 +9,11 @@
 #include <time.h>
 #include <boost/unordered_map.hpp>
 
-boost::unordered_map<PLAYERID, ePlayerData*> p_PlayerList; /* Fcking useless to have a array if we have this need to change this one day.*/
+boost::unordered_map<PLAYERID, ePlayerData*> p_PlayerList;
 bool bIsDetectionEnabled[MAX_DETECTIONS];
-ePlayerData p_PlayerData [ SAMP_MAX_PLAYERS ] ; // TODO: Add SA:MP Limits and some more structure :P
-
 
 void CAntiCheat::Init() 
 { // Init stuff here. (prereserving array etc.)
-	int iterator = 0;
-
-	for (iterator = 0; iterator < SAMP_MAX_PLAYERS; iterator++ ) 
-	{
-		p_PlayerData[iterator].bHasPermissionToSpectate = false; // shall we ?
-		p_PlayerData[iterator].bHasWeapon[46] = true; // ignore parachute for now later a advanced detection with vehicles
-	}
 }
 
 void CAntiCheat::Tick()
@@ -103,88 +94,122 @@ void CAntiCheat::OnDetect(ePlayerData *pPlayer, eCheatType eCheatType, const cha
 
 bool CAntiCheat::AddPlayer(PLAYERID playerID)
 {
-	if (playerID >= 0 && playerID < SAMP_MAX_PLAYERS)
+	if ( !SAMP_IS_VALID_PLAYERID(playerID) )
+		return false;
+
+	logprintf("CAntiCheat::AddPlayer(%d)", playerID);
+	boost::unordered_map<int, ePlayerData*>::iterator p = p_PlayerList.find(playerID);
+
+	ePlayerData p_PlayerData;
+
+	p_PlayerData.bHasPermissionToSpectate = false; // shall we ?
+	p_PlayerData.bHasWeapon[46] = true; // ignore parachute for now later a advanced detection with vehicles
+	p_PlayerData.iPlayerID = playerID;
+
+	if (p == p_PlayerList.end())
 	{
-		logprintf("CAntiCheat::AddPlayer(%d)", playerID);
-		boost::unordered_map<int, ePlayerData*>::iterator p = p_PlayerList.find(playerID);
-		p_PlayerData[playerID].iPlayerID = playerID;
-		if (p == p_PlayerList.end())
-		{
-			p_PlayerList.insert(std::make_pair(playerID, &p_PlayerData[playerID]));
-		}
+		p_PlayerList.insert(std::make_pair(playerID, &p_PlayerData));
 	}
 	return true;
 }
 
 bool CAntiCheat::RemovePlayer(PLAYERID playerID)
 {
-	if (playerID >= 0 && playerID < SAMP_MAX_PLAYERS) 
+	if ( !SAMP_IS_VALID_PLAYERID(playerID) )
+		return false;
+
+	boost::unordered_map<int, ePlayerData*>::iterator p = p_PlayerList.find(playerID);
+
+
+	if (p != p_PlayerList.end())
 	{
-		logprintf("CAntiCheat::RemovePlayer(%d)", playerID);
-		p_PlayerList.erase(playerID);
+		delete p->second;
+		p_PlayerList.erase(p);
 	}
 	return true;
+}
+
+ePlayerData* CAntiCheat::GetPlayerByID(PLAYERID playerID)
+{
+	boost::unordered_map<int, ePlayerData*>::iterator p = p_PlayerList.find(playerID);
+	if (p != p_PlayerList.end())
+	{
+		return p->second;
+	}
+	return NULL;
 }
 
 void CAntiCheat::CarWarpCheck(PLAYERID playerID, NEWSTATE stateNEW)
 {
 	if( bIsDetectionEnabled[ CHEAT_TYPE_CARWARP ] )
 	{		
-		if( CPlayer::GetVehicle( playerID ) != p_PlayerData[ playerID ].iCarWarpVehicleID )
+		ePlayerData *player;
+		if ( (player=GetPlayerByID(playerID)) == NULL ) return;
+
+		if( CPlayer::GetVehicle( playerID ) != player->iCarWarpVehicleID )
         {
-	        if( p_PlayerData[ playerID ].iCarWarpTimeStamp > time(NULL) )
+	        if( player->iCarWarpTimeStamp > time(NULL) )
 	        {
-				OnDetect(&p_PlayerData[ playerID ], CHEAT_TYPE_CARWARP, "%d", p_PlayerData[ playerID ].iCarWarpVehicleID);
+				OnDetect(player, CHEAT_TYPE_CARWARP, "%d", player->iCarWarpVehicleID);
 	            return;
 	        }
-	        p_PlayerData[ playerID ].iCarWarpTimeStamp = ((int)time(NULL)) + 1;
-			p_PlayerData[ playerID ].iCarWarpVehicleID = CPlayer::GetVehicle( playerID );
+			player->iCarWarpTimeStamp = ((int)time(NULL)) + 1;
+			player->iCarWarpVehicleID = CPlayer::GetVehicle( playerID );
 		}
 	}
 }
 
 void CAntiCheat::RapidPickupSpam(PLAYERID playerID, PICKUPID pickupID)
 {
+	ePlayerData *player;
+	if ( (player=GetPlayerByID(playerID)) == NULL ) return;
 	if( bIsDetectionEnabled[ CHEAT_TYPE_PICKUP_SPAM ] )
 	{
-		if( pickupID != p_PlayerData[ playerID ].iLastPickupID )
+		if( pickupID != player->iLastPickupID )
 		{
 			int iTickCount = (int)GetTickCount( ); // Call it once, because swag
-	        if( p_PlayerData[ playerID ].iPickupTimestamp > iTickCount )
+	        if( player->iPickupTimestamp > iTickCount )
 	        {
 				Vec3 curPos;
-				CPlayer::GetPosition(p_PlayerData[ playerID ].iPlayerID, &curPos.fX,&curPos.fY,&curPos.fZ);
+				CPlayer::GetPosition(player->iPlayerID, &curPos.fX,&curPos.fY,&curPos.fZ);
 	        	// He entered very fast, bad boy!!! Let's see how far it is though
-	        	float distance = p_PlayerData[ playerID ].vLastPickupPos.DistanceTo( &curPos );
+	        	float distance = player->vLastPickupPos.DistanceTo( &curPos );
 
-	        	if( distance < 100.0 ) logprintf("[AC WARN] Player ID %d has entered a pickup near him really fast. (distance: %0.2fm, time: %d)", (int)playerID, distance, p_PlayerData[ playerID ].iPickupTimestamp - iTickCount );
+	        	if( distance < 100.0 ) logprintf("[AC WARN] Player ID %d has entered a pickup near him really fast. (distance: %0.2fm, time: %d)", (int)playerID, distance, player->iPickupTimestamp - iTickCount );
 	        	else 
 	        	{
-					OnDetect(&p_PlayerData[ playerID ], CHEAT_TYPE_PICKUP_SPAM, "%d:%f:%d", pickupID, distance, p_PlayerData[ playerID ].iPickupTimestamp - iTickCount );
+					OnDetect(player, CHEAT_TYPE_PICKUP_SPAM, "%d:%f:%d", pickupID, distance, player->iPickupTimestamp - iTickCount );
 		            return;
 	        	}
 	        }
-	        p_PlayerData[ playerID ].iPickupTimestamp = iTickCount + 1000;
-			p_PlayerData[ playerID ].iLastPickupID = pickupID;		
+	        player->iPickupTimestamp = iTickCount + 1000;
+			player->iLastPickupID = pickupID;		
 		}		
 	}
-	CPlayer::GetPosition( p_PlayerData[ playerID ].iPlayerID, &p_PlayerData[ playerID ].vLastPickupPos.fX, &p_PlayerData[ playerID ].vLastPickupPos.fY, &p_PlayerData[ playerID ].vLastPickupPos.fZ );
+	CPlayer::GetPosition( player->iPlayerID, &player->vLastPickupPos.fX, &player->vLastPickupPos.fY, &player->vLastPickupPos.fZ );
 }
 
 cell AMX_NATIVE_CALL CAntiCheat::HookedGivePlayerWeapon( AMX* amx, cell* params )
 {
 	PLAYERID playerID = (PLAYERID)params[1];
-	p_PlayerData[playerID].bHasWeapon[params[2]] = true;
+
+	ePlayerData *player;
+	if ( (player=GetPlayerByID(playerID)) == NULL ) return NULL;
+
+	player->bHasWeapon[params[2]] = true;
 	return sampgdk_GivePlayerWeapon(playerID,params[2],params[3]);
 }
 
 cell AMX_NATIVE_CALL CAntiCheat::HookedResetPlayerWeapons( AMX* amx, cell* params )
 {
 	PLAYERID playerID = (PLAYERID)params[1];
-	sampgdk_ResetPlayerWeapons(playerID);;
+	ePlayerData *player;
+	if ( (player=GetPlayerByID(playerID)) == NULL ) return NULL;
+
+	sampgdk_ResetPlayerWeapons(playerID);
 
 	for (int it = 0; it != MAX_WEAPS; it++ ) 
-		p_PlayerData[playerID].bHasWeapon[it] = false;
+		player->bHasWeapon[it] = false;
 
 	return true;
 }
@@ -192,8 +217,10 @@ cell AMX_NATIVE_CALL CAntiCheat::HookedResetPlayerWeapons( AMX* amx, cell* param
 cell AMX_NATIVE_CALL CAntiCheat::HookedGivePlayerMoney( AMX* amx, cell* params )
 {
 	PLAYERID playerID = (PLAYERID)params[1];
+	ePlayerData *player;
+	if ( (player=GetPlayerByID(playerID)) == NULL ) return NULL;
 	int iMoney = (int)params[2];
-	p_PlayerData[playerID].iPlayerMoney += iMoney;
+	player->iPlayerMoney += iMoney;
 
 	return sampgdk_GivePlayerMoney(playerID,iMoney);
 }
@@ -201,7 +228,9 @@ cell AMX_NATIVE_CALL CAntiCheat::HookedGivePlayerMoney( AMX* amx, cell* params )
 cell AMX_NATIVE_CALL CAntiCheat::HookedGetPlayerMoney( AMX* amx, cell* params )
 {
 	PLAYERID playerID = (PLAYERID)params[1];
-	return p_PlayerData[playerID].iPlayerMoney;
+	ePlayerData *player;
+	if ( (player=GetPlayerByID(playerID)) == NULL ) return NULL;
+	return player->iPlayerMoney;
 }
 
 cell AMX_NATIVE_CALL CAntiCheat::HookedResetPlayerMoney( AMX* amx, cell* params )
@@ -215,6 +244,8 @@ cell AMX_NATIVE_CALL CAntiCheat::HookedTogglePlayerSpectating( AMX* amx, cell* p
 {
 	PLAYERID playerID = (PLAYERID)params[1];
 	bool	 bToggle  = !!params[2];
-	p_PlayerData[playerID].bHasPermissionToSpectate = bToggle;
+	ePlayerData *player;
+	if ( (player=GetPlayerByID(playerID)) == NULL ) return NULL;
+	player->bHasPermissionToSpectate = bToggle;
 	return true;
 }
