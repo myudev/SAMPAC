@@ -116,10 +116,14 @@ bool CAntiCheat::AddPlayer(PLAYERID playerID)
 	return true;
 }
 
-void CAntiCheat::RemovePlayer(PLAYERID playerID)
+bool CAntiCheat::RemovePlayer(PLAYERID playerID)
 {
-	logprintf("CAntiCheat::RemovePlayer(%d)", playerID);
-	p_PlayerList.erase(playerID);
+	if (playerID >= 0 && playerID < SAMP_MAX_PLAYERS) 
+	{
+		logprintf("CAntiCheat::RemovePlayer(%d)", playerID);
+		p_PlayerList.erase(playerID);
+	}
+	return true;
 }
 
 void CAntiCheat::CarWarpCheck(PLAYERID playerID, NEWSTATE stateNEW)
