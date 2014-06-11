@@ -1,0 +1,13 @@
+LIBRARY "SAMPAC"
+
+EXPORTS
+	Supports
+	Load
+	Unload
+	AmxLoad
+	AmxUnload
+	ProcessTick
+	OnPlayerConnect
+	OnPlayerDisconnect
+	OnPlayerStateChange
+	OnPlayerPickUpPickup

@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="lib\boost\system\src\error_code.cpp">
+      <Filter>lib\boost\system\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPlayer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CVehicle.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CAntiCheat.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CNatives.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\a_objects.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\a_players.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\a_samp.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\a_vehicles.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\core.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\core-win32.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\hook.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\hook-win32.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\natives.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\timers.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\timers-win32.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\version.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\amxhooks.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\fakeamx.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\sampgdk\src\sdk\plugin.cpp">
+      <Filter>lib\sampgdk</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lib\boost\system\src\local_free_on_destruction.hpp">
+      <Filter>lib\boost\system\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CPlayer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CVehicle.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CAntiCheat.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\typedef.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CNatives.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CSamp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\a_objects.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\a_players.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\a_samp.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\a_vehicles.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\amx.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\config.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\core.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\export.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\plugin.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\version.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\generated\a_objects-defs.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\generated\a_players-defs.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\generated\a_samp-defs.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sampgdk\generated\a_vehicles-defs.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\sampgdk\src\amxhooks.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\sampgdk\src\fakeamx.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\sampgdk\src\hook.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\sampgdk\src\natives.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\sampgdk\src\timers.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\sampgdk\src\sdk\plugin.h">
+      <Filter>lib\sampgdk</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="lib">
+      <UniqueIdentifier>{454ae49e-38e0-4462-96ae-60b168880e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\boost">
+      <UniqueIdentifier>{70c941d8-854f-47dc-9426-2e8406a0e2b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\boost\system">
+      <UniqueIdentifier>{e7172e1c-6901-4bfc-bb1c-5cf54fa1441b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\boost\system\src">
+      <UniqueIdentifier>{6d8e70a5-ca94-408c-966c-dcb5c93bdd07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{af2c85cd-fa73-4cf1-b4c7-e19cb691e308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\sampgdk">
+      <UniqueIdentifier>{23c76e3e-ae4b-4e78-9943-8ab11fd4ab3d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ThemAC.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\todo.txt" />
+    <None Include="ThemAC.def" />
+  </ItemGroup>
+</Project>

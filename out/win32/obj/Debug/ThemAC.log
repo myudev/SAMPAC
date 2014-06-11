@@ -1,0 +1,105 @@
+﻿Der Buildvorgang wurde am 23.01.2014 06:35:00 gestartet.
+     1>Projekt "C:\Users\trollin\Documents\Visual Studio 2012\Projects\ThemAC\ThemAC.vcxproj" auf Knoten "2", Rebuild Ziel(e).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX /Od /Oy- /D BOOST_ALL_NO_LIB /D BOOST_CHRONO_HEADER_ONLY /D _DEBUG /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"out\win32\obj\Debug\\lib\boost\system\src\\" /Fd"out\win32\obj\Debug\vc90.pdb" /Gd /TP /analyze- /errorReport:prompt lib\boost\system\src\error_code.cpp
+         error_code.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX /Od /Oy- /D BOOST_ALL_NO_LIB /D BOOST_CHRONO_HEADER_ONLY /D _DEBUG /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"out\win32\obj\Debug\\lib\sampgdk\src\\" /Fd"out\win32\obj\Debug\vc90.pdb" /Gd /TP /analyze- /errorReport:prompt lib\sampgdk\src\amxhooks.cpp lib\sampgdk\src\a_objects.cpp lib\sampgdk\src\a_players.cpp lib\sampgdk\src\a_samp.cpp lib\sampgdk\src\a_vehicles.cpp "lib\sampgdk\src\core-win32.cpp" lib\sampgdk\src\core.cpp lib\sampgdk\src\fakeamx.cpp "lib\sampgdk\src\hook-win32.cpp" lib\sampgdk\src\hook.cpp lib\sampgdk\src\natives.cpp "lib\sampgdk\src\timers-win32.cpp" lib\sampgdk\src\timers.cpp lib\sampgdk\src\version.cpp
+         version.cpp
+         timers.cpp
+         timers-win32.cpp
+         natives.cpp
+         hook.cpp
+         hook-win32.cpp
+         fakeamx.cpp
+         core.cpp
+         core-win32.cpp
+         a_vehicles.cpp
+         a_samp.cpp
+         a_players.cpp
+         a_objects.cpp
+         amxhooks.cpp
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX /Od /Oy- /D BOOST_ALL_NO_LIB /D BOOST_CHRONO_HEADER_ONLY /D _DEBUG /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"out\win32\obj\Debug\\lib\sampgdk\src\sdk\\" /Fd"out\win32\obj\Debug\vc90.pdb" /Gd /TP /analyze- /errorReport:prompt lib\sampgdk\src\sdk\plugin.cpp
+         plugin.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\CL.exe /c /Iinclude /ZI /nologo /W3 /WX /Od /Oy- /D BOOST_ALL_NO_LIB /D BOOST_CHRONO_HEADER_ONLY /D _DEBUG /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"out\win32\obj\Debug\\src\\" /Fd"out\win32\obj\Debug\vc90.pdb" /Gd /TP /analyze- /errorReport:prompt src\CAntiCheat.cpp src\CPlayer.cpp src\CVehicle.cpp src\main.cpp
+         main.cpp
+         CVehicle.cpp
+         CPlayer.cpp
+         CAntiCheat.cpp
+         Generating Code...
+       ResourceCompile:
+         C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\rc.exe /l"0x0409" /fo"out\win32\obj\Debug\ThemAC.res" ThemAC.rc 
+         Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+         
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         
+       ManifestResourceCompile:
+         C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\rc.exe /fo"out\win32\obj\Debug\Them-AC.dll.embed.manifest.res" out\win32\obj\Debug\Them-AC_manifest.rc 
+         Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+         
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"out\win32\Debug\Them-AC.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"ThemAC.def" /MANIFEST /ManifestFile:"out\win32\obj\Debug\Them-AC.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\trollin\Documents\Visual Studio 2012\Projects\ThemAC\out\win32\Debug\Them-AC.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"out\win32\Debug\Them-AC.lib" /MACHINE:X86 /DLL out\win32\obj\Debug\ThemAC.res
+         "out\win32\obj\Debug\Them-AC.dll.embed.manifest.res"
+         out\win32\obj\Debug\\lib\boost\system\src\\error_code.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\amxhooks.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\a_objects.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\a_players.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\a_samp.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\a_vehicles.obj
+         "out\win32\obj\Debug\\lib\sampgdk\src\\core-win32.obj"
+         out\win32\obj\Debug\\lib\sampgdk\src\\core.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\fakeamx.obj
+         "out\win32\obj\Debug\\lib\sampgdk\src\\hook-win32.obj"
+         out\win32\obj\Debug\\lib\sampgdk\src\\hook.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\natives.obj
+         "out\win32\obj\Debug\\lib\sampgdk\src\\timers-win32.obj"
+         out\win32\obj\Debug\\lib\sampgdk\src\\timers.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\version.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\sdk\\plugin.obj
+         out\win32\obj\Debug\\src\\CAntiCheat.obj
+         out\win32\obj\Debug\\src\\CPlayer.obj
+         out\win32\obj\Debug\\src\\CVehicle.obj
+         out\win32\obj\Debug\\src\\main.obj
+            Creating library out\win32\Debug\Them-AC.lib and object out\win32\Debug\Them-AC.exp
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\mt.exe /nologo /verbose /out:"out\win32\obj\Debug\Them-AC.dll.embed.manifest" /manifest "out\win32\obj\Debug\Them-AC.dll.intermediate.manifest"
+         C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\rc.exe /fo"out\win32\obj\Debug\Them-AC.dll.embed.manifest.res" out\win32\obj\Debug\Them-AC_manifest.rc 
+         Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+         
+         Copyright (C) Microsoft Corporation.  All rights reserved.
+         
+         
+       LinkEmbedManifest:
+         C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"out\win32\Debug\Them-AC.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"ThemAC.def" /MANIFEST /ManifestFile:"out\win32\obj\Debug\Them-AC.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\trollin\Documents\Visual Studio 2012\Projects\ThemAC\out\win32\Debug\Them-AC.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"out\win32\Debug\Them-AC.lib" /MACHINE:X86 /DLL out\win32\obj\Debug\ThemAC.res
+         "out\win32\obj\Debug\Them-AC.dll.embed.manifest.res"
+         out\win32\obj\Debug\\lib\boost\system\src\\error_code.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\amxhooks.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\a_objects.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\a_players.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\a_samp.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\a_vehicles.obj
+         "out\win32\obj\Debug\\lib\sampgdk\src\\core-win32.obj"
+         out\win32\obj\Debug\\lib\sampgdk\src\\core.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\fakeamx.obj
+         "out\win32\obj\Debug\\lib\sampgdk\src\\hook-win32.obj"
+         out\win32\obj\Debug\\lib\sampgdk\src\\hook.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\natives.obj
+         "out\win32\obj\Debug\\lib\sampgdk\src\\timers-win32.obj"
+         out\win32\obj\Debug\\lib\sampgdk\src\\timers.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\\version.obj
+         out\win32\obj\Debug\\lib\sampgdk\src\sdk\\plugin.obj
+         out\win32\obj\Debug\\src\\CAntiCheat.obj
+         out\win32\obj\Debug\\src\\CPlayer.obj
+         out\win32\obj\Debug\\src\\CVehicle.obj
+         out\win32\obj\Debug\\src\\main.obj
+            Creating library out\win32\Debug\Them-AC.lib and object out\win32\Debug\Them-AC.exp
+         ThemAC.vcxproj -> C:\Users\trollin\Documents\Visual Studio 2012\Projects\ThemAC\out\win32\Debug\Them-AC.dll
+     1>Die Erstellung des Projekts "C:\Users\trollin\Documents\Visual Studio 2012\Projects\ThemAC\ThemAC.vcxproj" ist abgeschlossen, Rebuild Ziel(e).
+
+Build erfolgreich.
+
+Verstrichene Zeit 00:00:17.25
