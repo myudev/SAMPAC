@@ -14,5 +14,6 @@ namespace CNatives
 {
 	cell AMX_NATIVE_CALL SAMPAC_SetTickRate(AMX *amx, cell *params);
 	cell AMX_NATIVE_CALL SAMPAC_SetDetectionState(AMX *amx, cell *params);
+	cell AMX_NATIVE_CALL SAMPAC_CallbackHook(AMX *amx, cell *params);
 }
 #endif
