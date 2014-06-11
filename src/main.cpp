@@ -49,6 +49,7 @@ AMX_NATIVE_INFO sNatives[] =
 {
 	{ "SAMPAC_SetTickRate", CNatives::SAMPAC_SetTickRate },
 	{ "SAMPAC_SetDetectionState", CNatives::SAMPAC_SetDetectionState },
+	{ "SAMPAC_CallbackHook", CNatives::SAMPAC_CallbackHook },
 	{ 0, 0 }
 };
 
@@ -125,39 +126,4 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick()
 		g_iTicksDone = 0;
 	}
 	g_iTicksDone++;
-}
-
-// Dirty dirty.
-PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerConnect(int playerid)
-{
-	if ( !CPlayer::IsNPC(playerid) )
-		return CAntiCheat::AddPlayer(playerid);
-
-	return true;
-}
-PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerDisconnect(int playerid,int reason)
-{
-	if ( !CPlayer::IsNPC(playerid) ) {
-		CAntiCheat::RemovePlayer(playerid);
-		return true;
-	}
-
-	return true;
-}
-PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerStateChange(int playerid, int newstate, int oldstate)
-{
-	if ( !CPlayer::IsNPC(playerid) ) {
-		CAntiCheat::CarWarpCheck(playerid, newstate);
-		return true;
-	}
-
-	return true;
-}
-PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerPickUpPickup(int playerid, int pickupid)
-{
-	if ( !CPlayer::IsNPC(playerid) ) {
-		CAntiCheat::RapidPickupSpam( playerid, pickupid );
-		return true;
-	}
-	return true;
 }
