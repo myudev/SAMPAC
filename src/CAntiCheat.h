@@ -42,7 +42,7 @@ namespace CAntiCheat {
 	void	OnDetect(ePlayerData *pPlayer, eCheatType eCheatType, const char *fmt, ...);
 
 	bool	AddPlayer(PLAYERID playerID);
-	void	RemovePlayer(PLAYERID playerID);
+	bool	RemovePlayer(PLAYERID playerID);
 
 	void 	CarWarpCheck(PLAYERID playerID, NEWSTATE stateNEW);
 	void 	RapidPickupSpam(PLAYERID playerID, PICKUPID pickupID);
