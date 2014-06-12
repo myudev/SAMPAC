@@ -1,7 +1,7 @@
 /*
 	PROJECT		<>	SA:MP Anticheat Plug-in
 	LICENSE		<>	See LICENSE in the top level directory.
-	AUTHOR(S)	<>	MyU (myudev0@gmail.com)
+	AUTHOR(S)	<>	MyU (myudev0@gmail.com), Lorenc_ (zeelorenc@hotmail.com)
 	PURPOSE		<>  Providing datastructures for the internal SA:MP Server.
 
 
@@ -21,7 +21,6 @@
 
     You should have received a copy of the GNU General Public License along
     with this program; if not, see <http://www.gnu.org/licenses/>.
-
 */
 
 #include "main.h"
@@ -107,6 +106,18 @@ VEHICLEID CPlayer::GetVehicle ( PLAYERID playerID )
 }
 
 
+bool CPlayer::IsInVehicle(PLAYERID playerID)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		return false;
+	}
+	else { // Fallback SAMPGDK :'(
+		return sampgdk_IsPlayerInAnyVehicle(playerID);
+	}
+	return false;
+}
+
+
 int CPlayer::GetMoney ( PLAYERID playerID ) 
 { 
 	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
@@ -138,5 +149,15 @@ int CPlayer::GetState ( PLAYERID playerID )
 	} 
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_GetPlayerState(playerID);
+	}
+}
+
+int CPlayer::GetPing ( PLAYERID playerID )
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		return 0xFFFF;
+	}
+	else { // Fallback SAMPGDK :'(
+		return sampgdk_GetPlayerPing(playerID);
 	}
 }
