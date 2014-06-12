@@ -1,0 +1,23 @@
+H4X PATCHING TO-DO LIST
+
+Car Warp					[ X ]
+Fake-Kill					[ X ]
+Super Vehicle Speed 		[   ]
+Rapid Pickup Enter			[ X ]
+Playerbugger.cs				[ X ]
+Anti Special Action			[   ]
+Money Hacks					[ X ]
+Weapon Hacks (fuck ammo)	[ X ]
+Ping Limit (optional)		[ X ]
+Airbrake					[   ]
+Ninja Car Warp				[   ]
+Health Hacks				[   ]
+Armour Hacks				[   ]
+Teleport Hacks				[   ]
+Remote Jack					[ X ] - Not 100% accurate, use as warning.
+Aimbot (0.3z)				[   ]
+
+Additions:
+Bot Attack					[   ]
+Anti-Spectate				[   ]
+into_car.cs					[   ]
