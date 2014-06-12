@@ -1,7 +1,7 @@
 /*
 	PROJECT		<>	SA:MP Anticheat Plug-in
 	LICENSE		<>	See LICENSE in the top level directory.
-	AUTHOR(S)	<>	MyU (myudev0@gmail.com)
+	AUTHOR(S)	<>	MyU (myudev0@gmail.com), Lorenc_ (zeelorenc@hotmail.com)
 	PURPOSE		<>  Providing datastructures for the internal SA:MP Server.
 
 
@@ -28,6 +28,7 @@
 #include <sampgdk/a_players.h>
 #include "CAntiCheat.h"
 #include "CPlayer.h"
+#include "CVehicle.h"
 #include <set>
 #include <vector>
 #include <math.h>
@@ -90,7 +91,13 @@ void CAntiCheat::Tick()
 			if ( p->second->iState == PLAYER_STATE_SPECTATING && !p->second->bHasPermissionToSpectate )
 				OnDetect(p->second, CHEAT_TYPE_SPECTATE, "\0"); // Cheater !
 		}
-		
+
+		if (bIsDetectionEnabled[CHEAT_TYPE_PING_LIMIT]) {
+			if (CPlayer::GetPing(p->second->iPlayerID) > set.g_iMaxPing)
+				OnDetect(p->second, CHEAT_TYPE_PING_LIMIT, "\0");
+		}
+
+		CAntiCheat::RemoteJackingCheck(p->second->iPlayerID);
 	}
 }
 
@@ -213,6 +220,61 @@ void CAntiCheat::RapidPickupSpam(PLAYERID playerID, PICKUPID pickupID)
 		}		
 	}
 	CPlayer::GetPosition( player->iPlayerID, &player->vLastPickupPos.fX, &player->vLastPickupPos.fY, &player->vLastPickupPos.fZ );
+}
+
+void CAntiCheat::FakeKillCheck(PLAYERID playerID)
+{
+	ePlayerData *player;
+	if ((player = GetPlayerByID(playerID)) == NULL) return;
+	if (bIsDetectionEnabled[CHEAT_TYPE_FAKEKILL])
+	{
+		int iTime = (int)time(NULL);
+
+		if ((iTime - player->iLastDeathTimestamp) <= 3)
+		{
+			if (player->iDeathCounts++ >= 3)
+			{
+				OnDetect(player, CHEAT_TYPE_FAKEKILL, "%d:%d", player->iDeathCounts, iTime - player->iLastDeathTimestamp);
+				return;
+			}
+		}
+		else player->iDeathCounts = 0;
+
+		player->iLastDeathTimestamp = iTime;
+	}
+}
+
+void CAntiCheat::RemoteJackingCheck(PLAYERID playerID)
+{
+	ePlayerData *player;
+	if ((player = GetPlayerByID(playerID)) == NULL) return;
+
+	if (bIsDetectionEnabled[CHEAT_TYPE_REMOTE_JACK])
+	{
+		int iVehicle = CPlayer::GetVehicle(playerID);
+
+		if (!CPlayer::IsInVehicle(playerID))
+			CPlayer::GetPosition(player->iPlayerID, &player->vLastCarjackData.fX, &player->vLastCarjackData.fY, &player->vLastCarjackData.fZ);
+
+		if ((iVehicle != player->iLastEnteredVehicle) && (iVehicle != 0) && (CPlayer::GetState(playerID) == PLAYER_STATE_DRIVER))
+		{
+			float 
+				fDistance = CVehicle::GetDistanceFromPoint(iVehicle, player->vLastCarjackData.fX, player->vLastCarjackData.fY, player->vLastCarjackData.fZ),
+				fOffset = 10.0;
+
+			int vModel = CVehicle::GetModel(iVehicle);
+
+			if ((vModel == 577) || (vModel == 592))
+				fOffset = 25.0; // Andromanda | AT-400
+
+			if (fDistance > fOffset) {
+				OnDetect(player, CHEAT_TYPE_REMOTE_JACK, "%f:%f:%d", fDistance, fOffset, iVehicle);
+			}
+
+			CPlayer::GetPosition(player->iPlayerID, &player->vLastCarjackData.fX, &player->vLastCarjackData.fY, &player->vLastCarjackData.fZ);
+			player->iLastEnteredVehicle = iVehicle;
+		}
+	}
 }
 
 cell AMX_NATIVE_CALL CAntiCheat::HookedGivePlayerWeapon( AMX* amx, cell* params )
