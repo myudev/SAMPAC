@@ -21,7 +21,6 @@
 
     You should have received a copy of the GNU General Public License along
     with this program; if not, see <http://www.gnu.org/licenses/>.
-
 */
 
 #ifndef _H_CSampServer
@@ -32,9 +31,6 @@ enum eSampVersion {
 	SAMP_03Z,
 	SAMP_03Z_R2
 };
-
-
-
 
 // Here belongs memory h4xoring stuff.
 #define PAD(a, b)			char a[b]
@@ -70,7 +66,6 @@ class CSyncData
 		WORD			wSurfingInfo;			// 0x00B4 - 0x00B6
 		int				iAnimationId;			// 0x00B6 - 0x00BA
 		// Size = 0x44
-
 };
 #pragma pack(pop)
 
@@ -85,7 +80,6 @@ class CAimSyncData
 		BYTE			byteWeaponState;		// 0x001D - 0x001E
 		PAD(pad0, 1);							// 0x001E - 0x001F
 		// Size = 0x1F
-
 };
 #pragma pack(pop)
 
@@ -108,7 +102,6 @@ class CVehicleSyncData
 		BYTE			byteSirenState;			// 0x0056 - 0x0057
 		PAD(pad0, 7);							// 0x0057 - 0x005E
 		// Size = 0x3F
-
 };
 #pragma pack(pop)
 
@@ -126,7 +119,6 @@ class CPassengerSyncData
 		WORD			wKeys;					// 0x0068 - 0x006A
 		Vec3		vecPosition;			// 0x006A - 0x0076
 		// Size = 0x18
-
 };
 #pragma pack(pop)
 
@@ -176,7 +168,6 @@ class CSAMPPlayer
 		WORD				wTargetId;			// 0x2696 - 0x2698
 		PAD(pad12, 31);							// 0x2698 - 0x26B7
 		// Size = 0x26B7
-
 };
 #pragma pack(pop)
 
@@ -193,8 +184,6 @@ class CSAMPVehicle
 		int				iModelId;			// 0x0082 - 0x0086
 		PAD(pad2, 32);						// 0x0086 - 0x00A6
 		float			fHealth;			// 0x00A6 - 0x00AA
-
-
 };
 #pragma pack(pop)
 
