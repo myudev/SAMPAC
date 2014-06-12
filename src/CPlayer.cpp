@@ -26,7 +26,6 @@
 
 #include "main.h"
 #include "CPlayer.h"
-#include <sampgdk/a_samp.h>
 #include <sampgdk/a_players.h>
 
 void CPlayer::SetPosition ( PLAYERID playerID, float fX, float fY, float fZ ) 

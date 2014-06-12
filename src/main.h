@@ -31,7 +31,9 @@
 #include <math.h>
 #include <string.h>
 #include "typedef.h"
+#include <sampgdk/a_samp.h>
 #include "CSampServer.h"
+
 typedef void (*logprintf_t)(const char*, ...);
 
 extern logprintf_t logprintf;

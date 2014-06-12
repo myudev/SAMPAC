@@ -25,11 +25,15 @@
 */
 #include "main.h"
 
+CNetGame*			CSampServer::pServer = NULL;
+eSampVersion		CSampServer::i_SAMPVersion = INVALID_VERSION;
 
-
-static void CSampServer::InitzializeSAMP()
+void CSampServer::TryInitzializeSAMP()
 {
 	/* Before anyone asks, i am not using any patterns or SA:MP export as they can be removed also with this checking we ensure that we don't call free space and cause a corruption. */
+
+	if ( pServer != NULL ) return;
+
 #ifdef WIN32
 
 	if (  strcmp(((char*)0x4B1BBC),  "0.3z")  ) // 0.3z SA:MP Server (0x4B1BBC is the SA:MP Version string).

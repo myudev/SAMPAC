@@ -1,8 +1,6 @@
 #ifndef CHOOKS_H
 #define CHOOKS_H
 
-#include "typedef.h"
-
 #define SAMPAC_OPC (0)
 #define SAMPAC_OPDC (1)
 #define SAMPAC_OPSC (2)

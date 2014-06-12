@@ -50,14 +50,6 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppPluginData)
 	logprintf = (logprintf_t)ppPluginData[PLUGIN_DATA_LOGPRINTF];
 	CAntiCheat::Init();
 
-	// Lazy Check by Version check
-	// TODO: Move it to an more advanced Version Support System (backward compatiblity)
-	// Reserach abit, you can find CNetGame here: 0x4F23C4 (0.3x R2 Patch 1)
-	if ( strcmp(((char*)0x4AD374),  "0.3x-R2") ) {
-		// set.m_bSAMPHooks = true; // not for now.
-	} 
-	else set.m_bSAMPHooks = false;
-
 	set.g_iTicksMax = 100; // Default Tick(s)
 
 	for ( int it = 0; it != MAX_DETECTIONS; it ++ )
@@ -149,6 +141,9 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick()
 	// 0x: Server works in ticks, so this is the best solution for delay.
 	if ( g_iTicksDone >= set.g_iTicksMax ) {
 		CAntiCheat::Tick();
+
+		CSampServer::TryInitzializeSAMP();
+
 		g_iTicksDone = 0;
 	}
 	g_iTicksDone++;

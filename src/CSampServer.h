@@ -41,10 +41,13 @@ enum eSampVersion {
 #define BOOL				bool
 #define WORD				unsigned int
 #define BYTE				byte
+/*
+SAMPGDK defines them but we should define them somewhere too (1000p version)
 #define MAX_PLAYERS			500
 #define MAX_VEHICLES		2000
 #define MAX_NAME_LENGTH		24
 #define NO_TEAM				255
+*/
 #define MAX_CLASSES			300
 #define SAMP_IS_VALID_PLAYERID(pid) ((pid < MAX_PLAYERS && pid > -1)?true:false)
 
@@ -211,7 +214,7 @@ public:
 	char	_pad[75012]; //0x0000 
 	BOOL bIsPlayerConnected[MAX_PLAYERS]; //0x12504 
 	CSAMPPlayer *pPlayer[MAX_PLAYERS]; //0x12CD4 
-	char szName[MAX_PLAYERS][MAX_NAME_LENGTH]; //0x134A4 
+	char szName[MAX_PLAYERS][MAX_PLAYER_NAME]; //0x134A4 
 	BOOL bUnk[MAX_PLAYERS]; // 0x16384
 	BOOL bIsAdmin[MAX_PLAYERS]; //0x16578 
 	BOOL mIsNPC[MAX_PLAYERS]; //0x16D48 
@@ -219,7 +222,7 @@ public:
 };//Size=0x17518
 #pragma pack(pop)
 
-#pragma pack(1)
+#pragma pack(push, 1)
 typedef struct SPAWN_INFO
 {
 	BYTE bTeam;
@@ -248,13 +251,11 @@ class CNetGame
 
 
 namespace CSampServer {
+	void			TryInitzializeSAMP();
+	CSAMPPlayer*	GetCPlayer(PLAYERID playerID);
 
-
-	static void		   InitzializeSAMP();
-	CSAMPPlayer* GetCPlayer(PLAYERID playerID);
-
-	CNetGame*	pServer;
-	static eSampVersion i_SAMPVersion;
+	extern CNetGame*		pServer;
+	extern eSampVersion		i_SAMPVersion;
 };
 
 #endif

@@ -6,7 +6,7 @@
 
 void CVehicle::GetPosition ( VEHICLEID vehicleID, float *fX, float *fY, float *fZ ) 
 {
-	if ( set.m_bSAMPHooks ) {
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
 		
 	} 
 	else { // Fallback SAMPGDK :'(
@@ -16,7 +16,7 @@ void CVehicle::GetPosition ( VEHICLEID vehicleID, float *fX, float *fY, float *f
 
 void CVehicle::GetVelocity ( VEHICLEID vehicleID, float *fX, float *fY, float *fZ ) 
 {
-	if ( set.m_bSAMPHooks ) {
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
 		
 	} 
 	else { // Fallback SAMPGDK :'(
