@@ -1,7 +1,7 @@
 /*
 	PROJECT		<>	SA:MP Anticheat Plug-in
 	LICENSE		<>	See LICENSE in the top level directory.
-	AUTHOR(S)	<>	MyU (myudev0@gmail.com)
+	AUTHOR(S)	<>	MyU (myudev0@gmail.com), Lorenc_ (zeelorenc@hotmail.com)
 	PURPOSE		<>  Providing datastructures for the internal SA:MP Server.
 
 
@@ -51,6 +51,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppPluginData)
 	CAntiCheat::Init();
 
 	set.g_iTicksMax = 100; // Default Tick(s)
+	set.g_iMaxPing = MAX_PING; // Default ping
 
 	for ( int it = 0; it != MAX_DETECTIONS; it ++ )
 		bIsDetectionEnabled[it] = true; // default enabled.
@@ -65,9 +66,10 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload()
 
 AMX_NATIVE_INFO sNatives[] =
 {
-	{ "SAMPAC_SetTickRate", CNatives::SAMPAC_SetTickRate },
-	{ "SAMPAC_SetDetectionState", CNatives::SAMPAC_SetDetectionState },
-	{ "SAMPAC_CallbackHook", CNatives::SAMPAC_CallbackHook },
+	{ "SAMPAC_SetTickRate",						CNatives::SAMPAC_SetTickRate },
+	{ "SAMPAC_SetDetectionState",				CNatives::SAMPAC_SetDetectionState },
+	{ "SAMPAC_CallbackHook",					CNatives::SAMPAC_CallbackHook },
+	{ "SAMPAC_SetServerPingLimit",				CNatives::SAMPAC_SetServerPingLimit },
 	{ 0, 0 }
 };
 
