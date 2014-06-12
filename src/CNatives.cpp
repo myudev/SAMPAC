@@ -1,7 +1,7 @@
 /*
 	PROJECT		<>	SA:MP Anticheat Plug-in
 	LICENSE		<>	See LICENSE in the top level directory.
-	AUTHOR(S)	<>	MyU (myudev0@gmail.com)
+	AUTHOR(S)	<>	MyU (myudev0@gmail.com), Lorenc_ (zeelorenc@hotmail.com)
 	PURPOSE		<>  Providing datastructures for the internal SA:MP Server.
 
 
@@ -21,7 +21,6 @@
 
     You should have received a copy of the GNU General Public License along
     with this program; if not, see <http://www.gnu.org/licenses/>.
-
 */
 
 #include "main.h"
@@ -44,6 +43,8 @@
 		native SAMPAC_SetTickRate(maxticks); // set's the maxium of ticks for the cycle lower value means faster higher means slower but also less resources.
 		native SAMPAC_SetDetectionState(eCheatTypes:detection, bool:bState); // enables / disables an detection (detection names are above).
 		native SAMPAC_CallbackHook(callback, {Float,_}:...); // allows us to hook callbacks easily without so much mess
+
+		native SAMPAC_SetServerPingLimit(timems = -1); // set the server ping limit, -1 for disabled
 
 	Callbacks:
 		forward SAMPAC_OnCheatDetect(playerid, detection, extrainfo[]);
@@ -123,4 +124,16 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_CallbackHook(AMX *amx, cell *params)
 		}
 	}
 	return 0;
+}
+
+cell AMX_NATIVE_CALL CNatives::SAMPAC_SetServerPingLimit(AMX *amx, cell *params)
+{
+	CHECK_PARAMS(1, "SAMPAC_SetServerPingLimit");
+
+	int iTicks = params[1];
+	if (iTicks < 50 || iTicks >= MAX_PING)
+		return logprintf("[SAMPAC:] SetServerPingLimit: Can't set Tickrate (Min: 50, Max: %d)", 0xFFFF), 1;
+
+	set.g_iTicksMax = iTicks;
+	return 1;
 }
