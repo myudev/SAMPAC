@@ -30,7 +30,7 @@
 #define SAMPAC_OPDC (1)
 #define SAMPAC_OPSC (2)
 #define SAMPAC_OPPP (3)
-#define SAMPAC_OPU (4)
+#define SAMPAC_OPD (4)
 
 namespace CallbackHooks 
 {
