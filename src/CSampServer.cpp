@@ -38,13 +38,13 @@ void CSampServer::TryInitzializeSAMP()
 
 	if (  strcmp(((char*)0x4B1BBC),  "0.3z")  ) // 0.3z SA:MP Server (0x4B1BBC is the SA:MP Version string).
 	{
-		i_SAMPVersion = SAMP_03Z;	
 		pServer = *(CNetGame**)0x4F234C;
+		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z;
 	}
 	else if (  strcmp(((char*)0x4B1CF4),  "0.3z-R2")  )
 	{
-		i_SAMPVersion = SAMP_03Z_R2;
 		pServer = *(CNetGame**)0x4F2370;
+		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z_R2;
 	}
 	else { i_SAMPVersion = INVALID_VERSION; }
 
@@ -52,13 +52,13 @@ void CSampServer::TryInitzializeSAMP()
 #else
 	if (  strcmp(((char*)0x814F973),  "0.3z")  ) // 0.3z SA:MP Server (0x4B1BBC is the SA:MP Version string).
 	{
-		i_SAMPVersion = SAMP_03Z;	
 		pServer = *(CNetGame**)0x819A564;
+		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z;
 	}
 	else if (  strcmp(((char*)0x814FCF9),  "0.3z-R2")  )
 	{
-		i_SAMPVersion = SAMP_03Z_R2;
 		pServer = *(CNetGame**)0x819B8E4;
+		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z_R2;
 	}
 	else { i_SAMPVersion = INVALID_VERSION; }
 #endif
@@ -68,6 +68,8 @@ void CSampServer::TryInitzializeSAMP()
 CSAMPPlayer* CSampServer::GetCPlayer(PLAYERID playerID)
 {
 	if ( !SAMP_IS_VALID_PLAYERID(playerID) ) return NULL;
+	if ( pServer == NULL )					 return NULL;
+	if ( pServer->pPlayerPool == NULL )      return NULL;
 
 	return pServer->pPlayerPool->pPlayer[playerID];
 }

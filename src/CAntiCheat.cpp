@@ -92,6 +92,7 @@ void CAntiCheat::Tick()
 				OnDetect(p->second, CHEAT_TYPE_SPECTATE, "\0"); // Cheater !
 		}
 
+		// Ping Limit
 		if (bIsDetectionEnabled[CHEAT_TYPE_PING_LIMIT]) {
 			if (CPlayer::GetPing(p->second->iPlayerID) > set.g_iMaxPing)
 				OnDetect(p->second, CHEAT_TYPE_PING_LIMIT, "\0");

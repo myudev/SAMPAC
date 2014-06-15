@@ -142,10 +142,10 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick()
 {
 	// 0x: Server works in ticks, so this is the best solution for delay.
 	if ( g_iTicksDone >= set.g_iTicksMax ) {
-		CAntiCheat::Tick();
 
 		CSampServer::TryInitzializeSAMP();
 
+		CAntiCheat::Tick();
 		g_iTicksDone = 0;
 	}
 	g_iTicksDone++;
