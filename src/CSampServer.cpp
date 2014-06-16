@@ -48,6 +48,8 @@ void CSampServer::TryInitzializeSAMP()
 	}
 	else { i_SAMPVersion = INVALID_VERSION; }
 
+	logprintf("%d = %d", i_SAMPVersion, INVALID_VERSION);
+
 
 #else
 	if (  strcmp(((char*)0x814F973),  "0.3z")  ) // 0.3z SA:MP Server (0x4B1BBC is the SA:MP Version string).

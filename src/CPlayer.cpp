@@ -81,7 +81,6 @@ void CPlayer::GetWeaponData ( PLAYERID playerID, short sIndex, int *iWeap, int *
 	}
 }
 
-
 bool CPlayer::IsNPC ( PLAYERID playerID ) 
 { 
 	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {

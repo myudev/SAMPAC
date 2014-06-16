@@ -41,6 +41,8 @@ bool bIsDetectionEnabled[MAX_DETECTIONS];
 
 void CAntiCheat::Init() 
 { // Init stuff here. (prereserving array etc.)
+	for (int i = 0; i != MAX_DETECTIONS; i++)
+		bIsDetectionEnabled[i] = true;
 }
 
 void CAntiCheat::Tick()
@@ -58,7 +60,7 @@ void CAntiCheat::Tick()
 			{
 				CPlayer::GetWeaponData(p->second->iPlayerID,i_iIt,&integers[0],&integers[1]);
 				if(integers[1] > 0 && integers[0] != 0)
-					if ( p->second->bHasWeapon[integers[0]] ) continue; else OnDetect(p->second, CHEAT_TYPE_WEAPON, "%d", integers[0]);
+					if ( !p->second->bHasWeapon[integers[0]] ) OnDetect(p->second, CHEAT_TYPE_WEAPON, "%d", integers[0]);
 			}
 		}
 
