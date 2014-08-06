@@ -39,35 +39,35 @@
 boost::unordered_map<PLAYERID, ePlayerData*> p_PlayerList;
 bool bIsDetectionEnabled[MAX_DETECTIONS];
 
+// Init stuff here. (prereserving array etc.)
 void CAntiCheat::Init() 
-{ // Init stuff here. (prereserving array etc.)
+{
 	for (int i = 0; i != MAX_DETECTIONS; i++)
 		bIsDetectionEnabled[i] = true;
 }
 
+// Invoked by ProcessTick
 void CAntiCheat::Tick()
-{ // Invoked by ProcessTick
+{
 	logprintf("CAntiCheat::Tick()");
-	int i_iIt = 0, i_It2 = 0; // Iterator (Base);
-	int integers [ 2 ]; // no need for double allocation
 	Vec3 tVec; // Temporary 3D Vector
 	for (boost::unordered_map<PLAYERID, ePlayerData*>::iterator p = p_PlayerList.begin(); p != p_PlayerList.end(); ++p)
 	{
-		p->second->iState = CPlayer::GetState(p->second->iPlayerID) ; // Save State for Later processing.
-		// Weapon Cheat
-		if ( bIsDetectionEnabled[CHEAT_TYPE_WEAPON] ) {
-			for(i_iIt = 0; i_iIt != 13; i_iIt++)
-			{
-				CPlayer::GetWeaponData(p->second->iPlayerID,i_iIt,&integers[0],&integers[1]);
-				if(integers[1] > 0 && integers[0] != 0)
-					if ( !p->second->bHasWeapon[integers[0]] ) OnDetect(p->second, CHEAT_TYPE_WEAPON, "%d", integers[0]);
-			}
+		p->second->iPlayerID = p->first; // Bug fix
+		p->second->iState = CPlayer::GetState(p->first) ; // Save State for Later processing.
+
+		// Anti-Weapon Hack
+		if (bIsDetectionEnabled[CHEAT_TYPE_WEAPON]) {
+			CAntiCheat::WeaponHackCheck(p->second->iPlayerID);
+			continue;
 		}
 
 		// Money Cheat ( just the reset )
 		if ( bIsDetectionEnabled[CHEAT_TYPE_MONEY] ) {
-			if ( CPlayer::GetMoney(p->second->iPlayerID) != p->second->iPlayerMoney ) 
+			if (CPlayer::GetMoney(p->second->iPlayerID) != p->second->iPlayerMoney)  {
 				CPlayer::SetMoney(p->second->iPlayerID, p->second->iPlayerMoney);
+				continue;
+			}
 		}
 
 		// Player Bugger
@@ -78,6 +78,7 @@ void CAntiCheat::Tick()
 		
 				if( tVec.fX >= 99999.0 || tVec.fY >= 99999.0 || tVec.fZ >= 99999.0 || tVec.fX <= -99999.0 || tVec.fY <= -99999.0 || tVec.fZ <= -99999.0 ) {
 					CPlayer::SetPosition( p->second->iPlayerID, p->second->vLastValidPos.fX, p->second->vLastValidPos.fY, p->second->vLastValidPos.fZ );
+					continue;
 				}
 				else
 				{
@@ -90,14 +91,18 @@ void CAntiCheat::Tick()
 
 		// Spectate
 		if ( bIsDetectionEnabled[CHEAT_TYPE_SPECTATE] ) {
-			if ( p->second->iState == PLAYER_STATE_SPECTATING && !p->second->bHasPermissionToSpectate )
+			if (p->second->iState == PLAYER_STATE_SPECTATING && !p->second->bHasPermissionToSpectate) {
 				OnDetect(p->second, CHEAT_TYPE_SPECTATE, "\0"); // Cheater !
+				continue;
+			}
 		}
 
 		// Ping Limit
 		if (bIsDetectionEnabled[CHEAT_TYPE_PING_LIMIT]) {
-			if (CPlayer::GetPing(p->second->iPlayerID) > set.g_iMaxPing)
+			if (CPlayer::GetPing(p->second->iPlayerID) > set.g_iMaxPing) {
 				OnDetect(p->second, CHEAT_TYPE_PING_LIMIT, "\0");
+				continue;
+			}
 		}
 
 		CAntiCheat::RemoteJackingCheck(p->second->iPlayerID);
@@ -278,6 +283,41 @@ void CAntiCheat::RemoteJackingCheck(PLAYERID playerID)
 			player->iLastEnteredVehicle = iVehicle;
 		}
 	}
+}
+
+void CAntiCheat::WeaponHackCheck(PLAYERID playerID)
+{
+	if (!bIsDetectionEnabled[CHEAT_TYPE_WEAPON])
+		return;
+
+	if (!SAMP_IS_VALID_PLAYERID(playerID))
+		return;
+
+	ePlayerData *player;
+	if ((player = GetPlayerByID(playerID)) == NULL) return;
+
+	int iWeapon = NULL, iAmmo = NULL;
+
+	for (int iSlot = 0; iSlot != 13; iSlot++)
+	{
+		CPlayer::GetWeaponData(player->iPlayerID, iSlot, &iWeapon, &iAmmo);
+		if (!player->bHasWeapon[iWeapon] && (iAmmo > 0 && iWeapon != 0 && iWeapon != 40)) {
+			OnDetect(player, CHEAT_TYPE_WEAPON, "%d", iWeapon);
+			break;
+		}
+	}
+
+	// can be used under onplayerkeystatechange (we'll review later)
+	/*if ((newKeys & KEY_FIRE) == KEY_FIRE)
+	{
+		logprintf("[WeaponHackCheck] LOL %d == %d", (int)player->iState, PLAYER_STATE_ONFOOT);
+		if (player->iState == PLAYER_STATE_ONFOOT)
+		{
+			weaponID = CPlayer::GetWeapon(playerID);
+
+			if (!player->bHasWeapon[weaponID] && weaponID != 40 && weaponID != 0) OnDetect(player, CHEAT_TYPE_WEAPON, "%d", weaponID);
+		}
+	}*/
 }
 
 cell AMX_NATIVE_CALL CAntiCheat::HookedGivePlayerWeapon( AMX* amx, cell* params )
