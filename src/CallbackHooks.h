@@ -31,6 +31,7 @@
 #define SAMPAC_OPSC (2)
 #define SAMPAC_OPPP (3)
 #define SAMPAC_OPD (4)
+#define SAMPAC_OPKSC (5)
 
 namespace CallbackHooks 
 {
@@ -40,6 +41,7 @@ namespace CallbackHooks
 	bool OnPlayerPickUpPickup(int playerid, int pickupid);
 	bool OnPlayerDeath(int playerid, int killerid, int reason);
 	bool OnPlayerUpdate(int playerid);
+	bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys);
 }
 
 #endif

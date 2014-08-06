@@ -80,3 +80,11 @@ bool CallbackHooks::OnPlayerUpdate(int playerid)
 	}
 	return true;
 }
+
+bool CallbackHooks::OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
+{
+	if (!CPlayer::IsNPC(playerid)) {
+		return true;
+	}
+	return true;
+}
