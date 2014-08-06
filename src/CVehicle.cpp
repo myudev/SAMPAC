@@ -68,3 +68,17 @@ int CVehicle::GetModel(VEHICLEID vehicleID)
 		return sampgdk_GetVehicleModel(vehicleID);
 	}
 }
+
+float CVehicle::GetSpeedInKPH(VEHICLEID vehicleID)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		return INVALID_VEHICLE_ID;
+	}
+	else { // Fallback SAMPGDK :'(
+		Vec3 velocity;
+
+		sampgdk_GetVehicleVelocity(vehicleID, &velocity.fX, &velocity.fY, &velocity.fZ);
+
+		return sqrt(velocity.fX * velocity.fX + velocity.fY * velocity.fY + velocity.fZ * velocity.fZ) * 170.0f;
+	}
+}

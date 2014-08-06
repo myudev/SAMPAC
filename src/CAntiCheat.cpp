@@ -35,6 +35,7 @@
 #include <stdarg.h> // va_*
 #include <time.h>
 #include <boost/unordered_map.hpp>
+#include "vehiclespeedlist.var"
 
 boost::unordered_map<PLAYERID, ePlayerData*> p_PlayerList;
 bool bIsDetectionEnabled[MAX_DETECTIONS];
@@ -59,14 +60,29 @@ void CAntiCheat::Tick()
 		// Anti-Weapon Hack
 		if (bIsDetectionEnabled[CHEAT_TYPE_WEAPON]) {
 			CAntiCheat::WeaponHackCheck(p->second->iPlayerID);
-			continue;
 		}
 
 		// Money Cheat ( just the reset )
 		if ( bIsDetectionEnabled[CHEAT_TYPE_MONEY] ) {
 			if (CPlayer::GetMoney(p->second->iPlayerID) != p->second->iPlayerMoney)  {
 				CPlayer::SetMoney(p->second->iPlayerID, p->second->iPlayerMoney);
-				continue;
+			}
+		}
+
+		// Anti-Vehicle Speed Hack
+		if (bIsDetectionEnabled[CHEAT_TYPE_MONEY]) {
+			if (p->second->iState == PLAYER_STATE_DRIVER)
+			{
+				int vehicleID = CPlayer::GetVehicle(p->second->iPlayerID);
+				int vehicleModel = CVehicle::GetModel(vehicleID);
+				float currentSpeed = CVehicle::GetSpeedInKPH(vehicleID);
+
+				logprintf("vehicle %d, speed %f, max %f", vehicleID, currentSpeed, fMaxVehicleSpeed[vehicleModel]);
+				if (vehicleModel && currentSpeed) {
+					if (currentSpeed > fMaxVehicleSpeed[vehicleModel]) {
+						OnDetect(p->second, CHEAT_TYPE_SPEED_HACK, "%d:%f", vehicleID, currentSpeed);
+					}
+				}
 			}
 		}
 
@@ -78,7 +94,6 @@ void CAntiCheat::Tick()
 		
 				if( tVec.fX >= 99999.0 || tVec.fY >= 99999.0 || tVec.fZ >= 99999.0 || tVec.fX <= -99999.0 || tVec.fY <= -99999.0 || tVec.fZ <= -99999.0 ) {
 					CPlayer::SetPosition( p->second->iPlayerID, p->second->vLastValidPos.fX, p->second->vLastValidPos.fY, p->second->vLastValidPos.fZ );
-					continue;
 				}
 				else
 				{
@@ -93,7 +108,6 @@ void CAntiCheat::Tick()
 		if ( bIsDetectionEnabled[CHEAT_TYPE_SPECTATE] ) {
 			if (p->second->iState == PLAYER_STATE_SPECTATING && !p->second->bHasPermissionToSpectate) {
 				OnDetect(p->second, CHEAT_TYPE_SPECTATE, "\0"); // Cheater !
-				continue;
 			}
 		}
 
@@ -101,7 +115,6 @@ void CAntiCheat::Tick()
 		if (bIsDetectionEnabled[CHEAT_TYPE_PING_LIMIT]) {
 			if (CPlayer::GetPing(p->second->iPlayerID) > set.g_iMaxPing) {
 				OnDetect(p->second, CHEAT_TYPE_PING_LIMIT, "\0");
-				continue;
 			}
 		}
 

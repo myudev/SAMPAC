@@ -31,7 +31,8 @@ namespace CVehicle {
 	void GetPosition ( VEHICLEID playerID, float *fX, float *fY, float *fZ ) ;
 	void GetVelocity ( VEHICLEID playerID, float *fX, float *fY, float *fZ ) ;
 
-	float GetDistanceFromPoint( VEHICLEID vehicleID, float fX, float fY, float fZ ) ;
+	float GetDistanceFromPoint(VEHICLEID vehicleID, float fX, float fY, float fZ);
+	float GetSpeedInKPH(VEHICLEID vehicleID);
 
 	int GetModel( VEHICLEID vehicleID ) ;
 }

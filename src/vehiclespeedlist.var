@@ -1,5 +1,5 @@
 /* credits to: Gamer_Z */
-float MaxVehicleSpeed[612] = {	260.00,
+float fMaxVehicleSpeed[612] = {	260.00,
 	260.00,
 	260.00,
 	260.00,

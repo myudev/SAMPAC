@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\todo.txt" />
+    <None Include="src\vehiclespeedlist.var" />
     <None Include="ThemAC.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
