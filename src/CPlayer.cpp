@@ -92,7 +92,6 @@ bool CPlayer::IsNPC ( PLAYERID playerID )
 	return 0;
 }
 
-
 VEHICLEID CPlayer::GetVehicle ( PLAYERID playerID ) 
 { 
 	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
@@ -103,7 +102,6 @@ VEHICLEID CPlayer::GetVehicle ( PLAYERID playerID )
 	}
 	return INVALID_VEHICLE_ID;
 }
-
 
 bool CPlayer::IsInVehicle(PLAYERID playerID)
 {
@@ -116,7 +114,6 @@ bool CPlayer::IsInVehicle(PLAYERID playerID)
 	return false;
 }
 
-
 int CPlayer::GetMoney ( PLAYERID playerID ) 
 { 
 	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
@@ -127,7 +124,6 @@ int CPlayer::GetMoney ( PLAYERID playerID )
 	}
 	return 0;
 }
-
 
 void CPlayer::SetMoney ( PLAYERID playerID, int iMoney ) 
 { 
@@ -140,10 +136,9 @@ void CPlayer::SetMoney ( PLAYERID playerID, int iMoney )
 	}
 }
 
-
 int CPlayer::GetState ( PLAYERID playerID ) 
-{ 
-	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
 		return 0;
 	} 
 	else { // Fallback SAMPGDK :'(
@@ -158,5 +153,15 @@ int CPlayer::GetPing ( PLAYERID playerID )
 	}
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_GetPlayerPing(playerID);
+	}
+}
+
+int CPlayer::GetWeapon(PLAYERID playerID)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		return 0xFFFF;
+	}
+	else { // Fallback SAMPGDK :'(
+		return sampgdk_GetPlayerWeapon(playerID);
 	}
 }

@@ -48,7 +48,7 @@ extern bool bIsDetectionEnabled[MAX_DETECTIONS];
 
 struct ePlayerData {
 	int iPlayerID;
-	bool bHasWeapon [ MAX_WEAPS ];	
+	bool bHasWeapon[ MAX_WEAPS ];	
 
 	int iPlayerMoney;
 
@@ -72,8 +72,8 @@ struct ePlayerData {
 };
 
 namespace CAntiCheat {
-	void	Init ( void );
-	void	Tick ( void );
+	void	Init( void );
+	void	Tick( void );
 	void	OnDetect(ePlayerData *pPlayer, eCheatType eCheatType, const char *fmt, ...);
 
 	bool	AddPlayer(PLAYERID playerID);
@@ -83,6 +83,7 @@ namespace CAntiCheat {
 	void 	RapidPickupSpam(PLAYERID playerID, PICKUPID pickupID);
 	void	FakeKillCheck(PLAYERID playerid);
 	void	RemoteJackingCheck(PLAYERID playerID);
+	void	WeaponHackCheck(PLAYERID playerID);
 
 	ePlayerData* GetPlayerByID(PLAYERID playerID);
 
