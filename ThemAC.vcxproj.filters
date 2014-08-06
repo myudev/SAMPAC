@@ -70,6 +70,9 @@
     <ClCompile Include="src\CallbackHooks.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\CFunctionHooks.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\boost\system\src\local_free_on_destruction.hpp">
@@ -160,6 +163,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\CallbackHooks.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFunctionHooks.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -86,16 +86,6 @@ namespace CAntiCheat {
 	void	WeaponHackCheck(PLAYERID playerID);
 
 	ePlayerData* GetPlayerByID(PLAYERID playerID);
-
-	// Hooked Things
-	cell AMX_NATIVE_CALL HookedGivePlayerWeapon( AMX* amx, cell* params );
-	cell AMX_NATIVE_CALL HookedResetPlayerWeapons( AMX* amx, cell* params );
-
-	cell AMX_NATIVE_CALL HookedGivePlayerMoney( AMX* amx, cell* params );
-	cell AMX_NATIVE_CALL HookedGetPlayerMoney( AMX* amx, cell* params );
-	cell AMX_NATIVE_CALL HookedResetPlayerMoney( AMX* amx, cell* params );
-
-	cell AMX_NATIVE_CALL HookedTogglePlayerSpectating( AMX* amx, cell* params );
 };
 
 #endif

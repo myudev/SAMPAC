@@ -26,6 +26,7 @@
 
 #include "main.h"
 #include "CAntiCheat.h"
+#include "CFunctionHooks.h"
 #include "CPlayer.h"
 #include "CNatives.h"
 #include "typedef.h"
@@ -104,27 +105,27 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX *amx)
 		
 		if ( bIsDetectionEnabled[CHEAT_TYPE_WEAPON] ) {
 			if (!strcmp("GivePlayerWeapon", GETENTRYNAME(hdr, func)))
-				func->address = (ucell)CAntiCheat::HookedGivePlayerWeapon;
+				func->address = (ucell)CFunctionHooks::HookedGivePlayerWeapon;
 
 			if (!strcmp("ResetPlayerWeapons", GETENTRYNAME(hdr, func)))
-				func->address = (ucell)CAntiCheat::HookedResetPlayerWeapons;
+				func->address = (ucell)CFunctionHooks::HookedResetPlayerWeapons;
 		}
 
 		if ( bIsDetectionEnabled[CHEAT_TYPE_MONEY] ) {
 			if (!strcmp("GivePlayerMoney", GETENTRYNAME(hdr, func)))
-				func->address = (ucell)CAntiCheat::HookedGivePlayerMoney;
+				func->address = (ucell)CFunctionHooks::HookedGivePlayerMoney;
 
 			if (!strcmp("GetPlayerMoney", GETENTRYNAME(hdr, func)))
-				func->address = (ucell)CAntiCheat::HookedGetPlayerMoney;
+				func->address = (ucell)CFunctionHooks::HookedGetPlayerMoney;
 
 			if (!strcmp("ResetPlayerMoney", GETENTRYNAME(hdr, func)))
-				func->address = (ucell)CAntiCheat::HookedResetPlayerMoney;
+				func->address = (ucell)CFunctionHooks::HookedResetPlayerMoney;
 			
 		}
 
 		if ( bIsDetectionEnabled[CHEAT_TYPE_SPECTATE] ) {
 			if (!strcmp("TogglePlayerSpectating", GETENTRYNAME(hdr, func)))
-				func->address = (ucell)CAntiCheat::HookedTogglePlayerSpectating;			
+				func->address = (ucell)CFunctionHooks::HookedTogglePlayerSpectating;
 		}
 
 	}

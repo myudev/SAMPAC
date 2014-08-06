@@ -100,6 +100,7 @@
     <ClCompile Include="lib\sampgdk\src\version.cpp" />
     <ClCompile Include="src\CallbackHooks.cpp" />
     <ClCompile Include="src\CAntiCheat.cpp" />
+    <ClCompile Include="src\CFunctionHooks.cpp" />
     <ClCompile Include="src\CNatives.cpp" />
     <ClCompile Include="src\CPlayer.cpp" />
     <ClCompile Include="src\CSampServer.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="lib\sampgdk\src\timers.h" />
     <ClInclude Include="src\CallbackHooks.h" />
     <ClInclude Include="src\CAntiCheat.h" />
+    <ClInclude Include="src\CFunctionHooks.h" />
     <ClInclude Include="src\CNatives.h" />
     <ClInclude Include="src\CPlayer.h" />
     <ClInclude Include="src\CSamp.h" />

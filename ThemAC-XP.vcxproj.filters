@@ -1,187 +1,142 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{98891499-D683-4622-9BCF-DCCEAD0A6674}</ProjectGuid>
+    <RootNamespace>ThemAC</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectName>Them-AC</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v90</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v90</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>out\win32\$(Configuration)\</OutDir>
+    <IntDir>out\win32\obj\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>out\win32\$(Configuration)\</OutDir>
+    <IntDir>out\win32\obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BOOST_ALL_NO_LIB;BOOST_CHRONO_HEADER_ONLY;_DEBUG</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>ThemAC.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BOOST_ALL_NO_LIB;BOOST_CHRONO_HEADER_ONLY;NDEBUG</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>ThemAC.def</ModuleDefinitionFile>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="lib\boost\system\src\error_code.cpp">
-      <Filter>lib\boost\system\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPlayer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CVehicle.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CAntiCheat.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CNatives.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\a_objects.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\a_players.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\a_samp.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\a_vehicles.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\core.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\core-win32.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\hook.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\hook-win32.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\natives.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\timers.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\timers-win32.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\version.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\amxhooks.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\fakeamx.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\sampgdk\src\sdk\plugin.cpp">
-      <Filter>lib\sampgdk</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CSampServer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CallbackHooks.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
+    <ClCompile Include="lib\boost\system\src\error_code.cpp" />
+    <ClCompile Include="lib\sampgdk\src\amxhooks.cpp" />
+    <ClCompile Include="lib\sampgdk\src\a_objects.cpp" />
+    <ClCompile Include="lib\sampgdk\src\a_players.cpp" />
+    <ClCompile Include="lib\sampgdk\src\a_samp.cpp" />
+    <ClCompile Include="lib\sampgdk\src\a_vehicles.cpp" />
+    <ClCompile Include="lib\sampgdk\src\core-win32.cpp" />
+    <ClCompile Include="lib\sampgdk\src\core.cpp" />
+    <ClCompile Include="lib\sampgdk\src\fakeamx.cpp" />
+    <ClCompile Include="lib\sampgdk\src\hook-win32.cpp" />
+    <ClCompile Include="lib\sampgdk\src\hook.cpp" />
+    <ClCompile Include="lib\sampgdk\src\natives.cpp" />
+    <ClCompile Include="lib\sampgdk\src\sdk\plugin.cpp" />
+    <ClCompile Include="lib\sampgdk\src\timers-win32.cpp" />
+    <ClCompile Include="lib\sampgdk\src\timers.cpp" />
+    <ClCompile Include="lib\sampgdk\src\version.cpp" />
+    <ClCompile Include="src\CallbackHooks.cpp" />
+    <ClCompile Include="src\CAntiCheat.cpp" />
+    <ClCompile Include="src\CNatives.cpp" />
+    <ClCompile Include="src\CPlayer.cpp" />
+    <ClCompile Include="src\CSampServer.cpp" />
+    <ClCompile Include="src\CVehicle.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lib\boost\system\src\local_free_on_destruction.hpp">
-      <Filter>lib\boost\system\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\main.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CPlayer.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CVehicle.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CAntiCheat.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\typedef.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CNatives.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CSamp.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\a_objects.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\a_players.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\a_samp.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\a_vehicles.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\amx.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\config.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\core.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\export.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\plugin.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\version.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\generated\a_objects-defs.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\generated\a_players-defs.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\generated\a_samp-defs.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="include\sampgdk\generated\a_vehicles-defs.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\sampgdk\src\amxhooks.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\sampgdk\src\fakeamx.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\sampgdk\src\hook.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\sampgdk\src\natives.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\sampgdk\src\timers.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\sampgdk\src\sdk\plugin.h">
-      <Filter>lib\sampgdk</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CSampServer.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CallbackHooks.h">
-      <Filter>src</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="lib">
-      <UniqueIdentifier>{454ae49e-38e0-4462-96ae-60b168880e4d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\boost">
-      <UniqueIdentifier>{70c941d8-854f-47dc-9426-2e8406a0e2b1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\boost\system">
-      <UniqueIdentifier>{e7172e1c-6901-4bfc-bb1c-5cf54fa1441b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\boost\system\src">
-      <UniqueIdentifier>{6d8e70a5-ca94-408c-966c-dcb5c93bdd07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{af2c85cd-fa73-4cf1-b4c7-e19cb691e308}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\sampgdk">
-      <UniqueIdentifier>{23c76e3e-ae4b-4e78-9943-8ab11fd4ab3d}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="include\sampgdk\amx.h" />
+    <ClInclude Include="include\sampgdk\a_objects.h" />
+    <ClInclude Include="include\sampgdk\a_players.h" />
+    <ClInclude Include="include\sampgdk\a_samp.h" />
+    <ClInclude Include="include\sampgdk\a_vehicles.h" />
+    <ClInclude Include="include\sampgdk\config.h" />
+    <ClInclude Include="include\sampgdk\core.h" />
+    <ClInclude Include="include\sampgdk\export.h" />
+    <ClInclude Include="include\sampgdk\generated\a_objects-defs.h" />
+    <ClInclude Include="include\sampgdk\generated\a_players-defs.h" />
+    <ClInclude Include="include\sampgdk\generated\a_samp-defs.h" />
+    <ClInclude Include="include\sampgdk\generated\a_vehicles-defs.h" />
+    <ClInclude Include="include\sampgdk\plugin.h" />
+    <ClInclude Include="include\sampgdk\version.h" />
+    <ClInclude Include="lib\boost\system\src\local_free_on_destruction.hpp" />
+    <ClInclude Include="lib\sampgdk\src\amxhooks.h" />
+    <ClInclude Include="lib\sampgdk\src\fakeamx.h" />
+    <ClInclude Include="lib\sampgdk\src\hook.h" />
+    <ClInclude Include="lib\sampgdk\src\natives.h" />
+    <ClInclude Include="lib\sampgdk\src\sdk\plugin.h" />
+    <ClInclude Include="lib\sampgdk\src\timers.h" />
+    <ClInclude Include="src\CallbackHooks.h" />
+    <ClInclude Include="src\CAntiCheat.h" />
+    <ClInclude Include="src\CNatives.h" />
+    <ClInclude Include="src\CPlayer.h" />
+    <ClInclude Include="src\CSamp.h" />
+    <ClInclude Include="src\CSampServer.h" />
+    <ClInclude Include="src\CVehicle.h" />
+    <ClInclude Include="src\main.h" />
+    <ClInclude Include="src\typedef.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ThemAC.rc" />
@@ -190,4 +145,7 @@
     <None Include="..\todo.txt" />
     <None Include="ThemAC.def" />
   </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>
