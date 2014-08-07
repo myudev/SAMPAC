@@ -57,6 +57,12 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppPluginData)
 	for ( int it = 0; it != MAX_DETECTIONS; it ++ )
 		bIsDetectionEnabled[it] = true; // default enabled.
 
+	logprintf(" _____________________________________________________ ");
+	logprintf("|                ThemAC Loaded - v0.0.0               |");
+	logprintf("|              Created by Lorenc and MyU              |");
+	logprintf("|  Thanks Irresistible Gaming hackers for debugging!  |");
+	logprintf("|_____________________________________________________|");
+
 	return true;
 }
 
