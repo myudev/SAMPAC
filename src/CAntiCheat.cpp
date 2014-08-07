@@ -70,9 +70,8 @@ void CAntiCheat::Tick()
 		}
 
 		// Anti-Vehicle Speed Hack
-		if (bIsDetectionEnabled[CHEAT_TYPE_MONEY]) {
-			if (p->second->iState == PLAYER_STATE_DRIVER)
-			{
+		if (bIsDetectionEnabled[CHEAT_TYPE_SPEED_HACK]) {
+			if (p->second->iState == PLAYER_STATE_DRIVER) {
 				int vehicleID = CPlayer::GetVehicle(p->second->iPlayerID);
 				int vehicleModel = CVehicle::GetModel(vehicleID);
 				float currentSpeed = CVehicle::GetSpeedInKPH(vehicleID);
