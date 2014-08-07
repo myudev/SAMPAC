@@ -76,9 +76,13 @@ float CVehicle::GetSpeedInKPH(VEHICLEID vehicleID)
 	}
 	else { // Fallback SAMPGDK :'(
 		Vec3 velocity;
+		const float magicNumber = 170.0f; // From sobiet source
 
 		sampgdk_GetVehicleVelocity(vehicleID, &velocity.fX, &velocity.fY, &velocity.fZ);
 
-		return sqrt(velocity.fX * velocity.fX + velocity.fY * velocity.fY + velocity.fZ * velocity.fZ) * 170.0f;
+		if (velocity.fZ < -0.023f)
+			return sqrt(velocity.fX * velocity.fX + velocity.fY * velocity.fY) * magicNumber;
+		else
+			return sqrt(velocity.fX * velocity.fX + velocity.fY * velocity.fY + velocity.fZ * velocity.fZ) * magicNumber;
 	}
 }
