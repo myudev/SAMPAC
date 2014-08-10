@@ -30,12 +30,19 @@ namespace CFunctionHooks
 {
 	cell AMX_NATIVE_CALL HookedGivePlayerWeapon(AMX* amx, cell* params);
 	cell AMX_NATIVE_CALL HookedResetPlayerWeapons(AMX* amx, cell* params);
+	cell AMX_NATIVE_CALL HookedSetSpawnInfo(AMX* amx, cell* params);
+
+	cell AMX_NATIVE_CALL HookedAddPlayerClass(AMX* amx, cell* params);
+	cell AMX_NATIVE_CALL HookedAddPlayerClassEx(AMX* amx, cell* params);
 
 	cell AMX_NATIVE_CALL HookedGivePlayerMoney(AMX* amx, cell* params);
 	cell AMX_NATIVE_CALL HookedGetPlayerMoney(AMX* amx, cell* params);
 	cell AMX_NATIVE_CALL HookedResetPlayerMoney(AMX* amx, cell* params);
 
 	cell AMX_NATIVE_CALL HookedTogglePlayerSpectating(AMX* amx, cell* params);
+
+	cell AMX_NATIVE_CALL HookedSetPlayerSpecialAction(AMX* amx, cell* params);
+	cell AMX_NATIVE_CALL HookedGetPlayerSpecialAction(AMX* amx, cell* params);
 };
 
 #endif

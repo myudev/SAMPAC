@@ -165,3 +165,23 @@ int CPlayer::GetWeapon(PLAYERID playerID)
 		return sampgdk_GetPlayerWeapon(playerID);
 	}
 }
+
+int CPlayer::GetAnimationIndex(PLAYERID playerID)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		return 0;
+	}
+	else { // Fallback SAMPGDK :'(
+		return sampgdk_GetPlayerAnimationIndex(playerID);
+	}
+}
+
+int CPlayer::GetSpecialAction(PLAYERID playerID)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		return 0;
+	}
+	else { // Fallback SAMPGDK :'(
+		return sampgdk_GetPlayerSpecialAction(playerID);
+	}
+}

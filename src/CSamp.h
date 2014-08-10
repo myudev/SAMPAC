@@ -28,9 +28,7 @@
 // Needs research:
 // - Player Pool
 // - Vehicle Pool
-
-
-#define SAMP_MAX_CLASSES ( 300 )
+#define MAX_CLASSES (300)
 
 #pragma pack(1)
 typedef struct _CLASS_INFO {
@@ -51,6 +49,6 @@ class CNetGame {
 	void *p_VehiclePool; // also
 	char unk[0x6D]; // overjump some crap
 	int  p_iSpawnsAvailable; // aka Classes
-	_CLASS_INFO m_cClasses[SAMP_MAX_CLASSES];
+	_CLASS_INFO m_cClasses[MAX_CLASSES];
 };
 #pragma pack(pop)
