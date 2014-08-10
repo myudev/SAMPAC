@@ -34,7 +34,6 @@ bool CallbackHooks::OnPlayerConnect(int playerid)
 	if (!CPlayer::IsNPC(playerid))
 		return CAntiCheat::AddPlayer(playerid);
 
-
 	return true;
 }
 

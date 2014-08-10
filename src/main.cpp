@@ -122,8 +122,8 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX *amx)
 			if (!strcmp("AddPlayerClass", GETENTRYNAME(hdr, func)))
 				func->address = (ucell)CFunctionHooks::HookedAddPlayerClass;
 
-			if (!strcmp("AddPlayerClassEx", GETENTRYNAME(hdr, func)))
-				func->address = (ucell)CFunctionHooks::HookedAddPlayerClassEx;
+			//if (!strcmp("AddPlayerClassEx", GETENTRYNAME(hdr, func)))
+			//	func->address = (ucell)CFunctionHooks::HookedAddPlayerClassEx;
 		}
 
 		if ( bIsDetectionEnabled[CHEAT_TYPE_MONEY] ) {
@@ -137,17 +137,15 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX *amx)
 				func->address = (ucell)CFunctionHooks::HookedResetPlayerMoney;
 		}
 
-		if ( bIsDetectionEnabled[CHEAT_TYPE_SPECIAL_ACTION] ) {
-			if (!strcmp("SetPlayerSpecialAction", GETENTRYNAME(hdr, func)))
-				func->address = (ucell)CFunctionHooks::HookedSetPlayerSpecialAction;
-
-			if (!strcmp("GetPlayerSpecialAction", GETENTRYNAME(hdr, func)))
-				func->address = (ucell)CFunctionHooks::HookedGetPlayerSpecialAction;
-		}
-
 		if ( bIsDetectionEnabled[CHEAT_TYPE_SPECTATE] ) {
 			if (!strcmp("TogglePlayerSpectating", GETENTRYNAME(hdr, func)))
 				func->address = (ucell)CFunctionHooks::HookedTogglePlayerSpectating;
+		}
+
+		if (bIsDetectionEnabled[CHEAT_TYPE_JETPACK]) {
+			if (!strcmp("SetPlayerSpecialAction", GETENTRYNAME(hdr, func)))
+				func->address = (ucell)CFunctionHooks::HookedSetPlayerSpecialAction;
+
 		}
 
 	}

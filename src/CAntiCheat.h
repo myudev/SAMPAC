@@ -47,7 +47,7 @@ enum eCheatType {
 	CHEAT_TYPE_REMOTE_JACK,
 	CHEAT_TYPE_PING_LIMIT,
 	CHEAT_TYPE_SPEED_HACK,
-	CHEAT_TYPE_SPECIAL_ACTION
+	CHEAT_TYPE_JETPACK
 };
 extern bool bIsDetectionEnabled[MAX_DETECTIONS];
 
@@ -56,8 +56,8 @@ struct ePlayerData {
 	bool bHasWeapon[ MAX_WEAPS ];	
 
 	int iPlayerMoney;
-	int iSpecialAction;
 	int iSelectedClass;
+	int iSpecialAction;
 
 	int iCarWarpVehicleID;
 	int iCarWarpTimeStamp;
@@ -90,7 +90,7 @@ namespace CAntiCheat {
 	void	FakeKillCheck(PLAYERID playerid);
 	void	RemoteJackingCheck(PLAYERID playerID);
 	void	WeaponHackCheck(PLAYERID playerID);
-	void	WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW);
+	bool	WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW);
 
 	ePlayerData* GetPlayerByID(PLAYERID playerID);
 };

@@ -118,10 +118,11 @@ void CAntiCheat::Tick()
 		}
 
 		// Anti Special Action (basically anti-jetpack)
-		if (bIsDetectionEnabled[CHEAT_TYPE_SPECIAL_ACTION]) {
-			int specialAction = CPlayer::GetSpecialAction(p->second->iPlayerID);
-			if (specialAction != p->second->iSpecialAction)  {
-				OnDetect(p->second, CHEAT_TYPE_SPECIAL_ACTION, "%d", specialAction);
+		if (bIsDetectionEnabled[CHEAT_TYPE_JETPACK]) {
+			if (p->second->iState == PLAYER_STATE_ONFOOT) {
+				if (CPlayer::GetSpecialAction(p->second->iPlayerID) == SPECIAL_ACTION_USEJETPACK && p->second->iSpecialAction != SPECIAL_ACTION_USEJETPACK)  {
+					OnDetect(p->second, CHEAT_TYPE_JETPACK, "\0");
+				}
 			}
 		}
 
@@ -163,9 +164,10 @@ bool CAntiCheat::AddPlayer(PLAYERID playerID)
 
 	ePlayerData p_PlayerData;
 
-	p_PlayerData.bHasPermissionToSpectate = false; // shall we ?
-	ResetPlayerServerWeapons(p_PlayerData);
 	p_PlayerData.iPlayerID = playerID;
+	p_PlayerData.bHasPermissionToSpectate = false; // shall we ?
+	p_PlayerData.iSelectedClass = 0;
+	ResetPlayerServerWeapons(p_PlayerData);
 
 	if (p == p_PlayerList.end())
 	{
@@ -340,16 +342,20 @@ void CAntiCheat::WeaponHackCheck(PLAYERID playerID)
 	}*/
 }
 
-void CAntiCheat::WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW)
+bool CAntiCheat::WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW)
 {
 	ePlayerData *player;
-	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return;
+	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return false;
 
 	// Can't be bothered hooking Onplayerspawn lol
 	if (stateNEW == PLAYER_STATE_SPAWNED)
 	{
-		for (int i = 0; i < 3; i++)
-			player->bHasWeapon[CSampServer::pServer->m_AvailableSpawns[player->iSelectedClass].iSpawnWeapons[i]] = true;
+		for (int i = 0; i < 3; i++) if (i > 0)
+			logprintf("player->bHasWeapon[CSampServer::pServer->m_AvailableSpawns[%d].iSpawnWeapons[%d]] = true; // wep id %d", player->iSelectedClass, i);
+			
+		// CSampServer::pServer->m_AvailableSpawns[player->iSelectedClass].iSpawnWeapons[i]
+			//player->bHasWeapon[] = true;
+
 	}
 
 	// Credits to wups
@@ -370,5 +376,6 @@ void CAntiCheat::WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW)
 				break;
 		}
 	}
+	return true;
 }
 

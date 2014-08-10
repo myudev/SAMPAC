@@ -42,7 +42,6 @@ namespace CFunctionHooks
 	cell AMX_NATIVE_CALL HookedTogglePlayerSpectating(AMX* amx, cell* params);
 
 	cell AMX_NATIVE_CALL HookedSetPlayerSpecialAction(AMX* amx, cell* params);
-	cell AMX_NATIVE_CALL HookedGetPlayerSpecialAction(AMX* amx, cell* params);
 };
 
 #endif

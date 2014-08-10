@@ -61,7 +61,9 @@ cell AMX_NATIVE_CALL CFunctionHooks::HookedAddPlayerClass(AMX* amx, cell* params
 {
 	int
 		classid = sampgdk_AddPlayerClass(params[1], amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]), params[6], params[7], params[8], params[9], params[10], params[11]);
-
+	
+	// Crashes the server lol
+	/*
 	if (classid < MAX_CLASSES)
 	{
 		if (params[6] != -1) {
@@ -76,7 +78,7 @@ cell AMX_NATIVE_CALL CFunctionHooks::HookedAddPlayerClass(AMX* amx, cell* params
 			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[2] = params[10];
 			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[2] = params[11];
 		}
-	}
+	}*/
 	return classid;
 }
 
@@ -161,14 +163,8 @@ cell AMX_NATIVE_CALL CFunctionHooks::HookedSetPlayerSpecialAction(AMX* amx, cell
 	PLAYERID playerID = (PLAYERID)params[1];
 	ePlayerData *player;
 	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return NULL;
-	player->iSpecialAction = (int)params[2];
-	return true;
+	int specialAction = (int)params[2];
+	player->iSpecialAction = specialAction;
+	return sampgdk_SetPlayerSpecialAction(playerID, specialAction);
 }
 
-cell AMX_NATIVE_CALL CFunctionHooks::HookedGetPlayerSpecialAction(AMX* amx, cell* params)
-{
-	PLAYERID playerID = (PLAYERID)params[1];
-	ePlayerData *player;
-	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return NULL;
-	return player->iSpecialAction;
-}
