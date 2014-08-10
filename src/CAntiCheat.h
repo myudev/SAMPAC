@@ -31,6 +31,9 @@
 #define MAX_WEAPS ( 55 )
 #define SAMP_MAX_PLAYERS	( 1000 )
 
+#define ResetPlayerServerWeapons(player) \
+	for (int i = 0; i < MAX_WEAPS; i++) player.bHasWeapon[i] = false;
+
 // TODO: Cleanup
 #define MAX_DETECTIONS 11
 enum eCheatType {
@@ -43,7 +46,8 @@ enum eCheatType {
 	CHEAT_TYPE_FAKEKILL,
 	CHEAT_TYPE_REMOTE_JACK,
 	CHEAT_TYPE_PING_LIMIT,
-	CHEAT_TYPE_SPEED_HACK
+	CHEAT_TYPE_SPEED_HACK,
+	CHEAT_TYPE_JETPACK
 };
 extern bool bIsDetectionEnabled[MAX_DETECTIONS];
 
@@ -52,6 +56,8 @@ struct ePlayerData {
 	bool bHasWeapon[ MAX_WEAPS ];	
 
 	int iPlayerMoney;
+	int iSelectedClass;
+	int iSpecialAction;
 
 	int iCarWarpVehicleID;
 	int iCarWarpTimeStamp;
@@ -69,7 +75,6 @@ struct ePlayerData {
 
 	Vec3 vLastPickupPos;
 	Vec3 vLastValidPos;
-
 };
 
 namespace CAntiCheat {
@@ -85,6 +90,7 @@ namespace CAntiCheat {
 	void	FakeKillCheck(PLAYERID playerid);
 	void	RemoteJackingCheck(PLAYERID playerID);
 	void	WeaponHackCheck(PLAYERID playerID);
+	bool	WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW);
 
 	ePlayerData* GetPlayerByID(PLAYERID playerID);
 };

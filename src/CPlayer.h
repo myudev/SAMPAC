@@ -29,24 +29,26 @@
 
 namespace CPlayer {
 	// Getting Data
-	void GetPosition	(PLAYERID playerID, float *fX, float *fY, float *fZ);
-	void GetVelocity	(PLAYERID playerID, float *fX, float *fY, float *fZ);
+	void GetPosition		(PLAYERID playerID, float *fX, float *fY, float *fZ);
+	void GetVelocity		(PLAYERID playerID, float *fX, float *fY, float *fZ);
 
-	void GetWeaponData	(PLAYERID playerID, short sIndex, int *iWeap, int *iAmmo);
+	void GetWeaponData		(PLAYERID playerID, short sIndex, int *iWeap, int *iAmmo);
 
-	bool IsNPC			(PLAYERID playerID);
+	bool IsNPC				(PLAYERID playerID);
 
-	VEHICLEID GetVehicle(PLAYERID playerID);
-	bool IsInVehicle	(PLAYERID playerID);
+	VEHICLEID GetVehicle	(PLAYERID playerID);
+	bool IsInVehicle		(PLAYERID playerID);
 
-	void SetMoney		(PLAYERID playerID, int iMoney);
-	int GetMoney		(PLAYERID playerID);
-	int GetPing			(PLAYERID playerID);
-	int GetState		(PLAYERID playerID);
-	int GetWeapon		(PLAYERID playerID);
+	void SetMoney			(PLAYERID playerID, int iMoney);
+	int GetMoney			(PLAYERID playerID);
+	int GetPing				(PLAYERID playerID);
+	int GetState			(PLAYERID playerID);
+	int GetWeapon			(PLAYERID playerID);
+	int GetAnimationIndex	(PLAYERID playerID);
+	int GetSpecialAction	(PLAYERID playerID);
 
 	// Settings Data
-	void SetPosition	(PLAYERID playerID, float fX, float fY, float fZ);
-	void SetVelocity	(PLAYERID playerID, float fX, float fY, float fZ);
+	void SetPosition		(PLAYERID playerID, float fX, float fY, float fZ);
+	void SetVelocity		(PLAYERID playerID, float fX, float fY, float fZ);
 }
 #endif

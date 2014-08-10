@@ -2,10 +2,10 @@ H4X PATCHING TO-DO LIST
 
 Car Warp					[ X ]
 Fake-Kill					[ X ]
-Super Vehicle Speed 		[   ]
+Super Vehicle Speed 		[ X ]
 Rapid Pickup Enter			[ X ]
 Playerbugger.cs				[ X ]
-Anti Special Action			[   ]
+Anti Special Action			[ X ]
 Money Hacks					[ X ]
 Weapon Hacks (fuck ammo)	[ X ]
 Ping Limit (optional)		[ X ]
@@ -19,5 +19,5 @@ Aimbot (0.3z)				[   ]
 
 Additions:
 Bot Attack					[   ]
-Anti-Spectate				[   ]
-into_car.cs					[   ]
+Anti-Spectate				[ X ] - Looks complete, needs testing though.
+into_car.cs					[ X ] - Handled by Remote Jack Detection
