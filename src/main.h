@@ -70,5 +70,4 @@ struct eSettings {
 };
 extern eSettings set;
 extern std::set<AMX*> pLAMXList;
-
 #endif
