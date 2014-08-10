@@ -29,6 +29,7 @@
 #include "CAntiCheat.h"
 #include "CPlayer.h"
 
+#include <sampgdk/a_samp.h>
 #include <sampgdk/a_players.h>
 
 cell AMX_NATIVE_CALL CFunctionHooks::HookedGivePlayerWeapon(AMX* amx, cell* params)
@@ -40,6 +41,66 @@ cell AMX_NATIVE_CALL CFunctionHooks::HookedGivePlayerWeapon(AMX* amx, cell* para
 
 	player->bHasWeapon[params[2]] = true;
 	return sampgdk_GivePlayerWeapon(playerID, params[2], params[3]);
+}
+
+cell AMX_NATIVE_CALL CFunctionHooks::HookedSetSpawnInfo(AMX* amx, cell* params)
+{
+	PLAYERID playerID = (PLAYERID)params[1];
+
+	ePlayerData *player;
+	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return NULL;
+
+	if (params[8] != -1) player->bHasWeapon[params[8]] = true;
+	if (params[10] != -1) player->bHasWeapon[params[10]] = true;
+	if (params[12] != -1) player->bHasWeapon[params[12]] = true;
+
+	return sampgdk_SetSpawnInfo(params[1], params[2], params[3], amx_ctof(params[4]), amx_ctof(params[5]), amx_ctof(params[6]), amx_ctof(params[7]), params[8], params[9], params[10], params[11], params[12], params[13]);
+}
+
+cell AMX_NATIVE_CALL CFunctionHooks::HookedAddPlayerClass(AMX* amx, cell* params)
+{
+	int
+		classid = sampgdk_AddPlayerClass(params[1], amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]), params[6], params[7], params[8], params[9], params[10], params[11]);
+
+	if (classid < MAX_CLASSES)
+	{
+		if (params[6] != -1) {
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[0] = params[6];
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[0] = params[7];
+		}
+		if (params[8] != -1) {
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[1] = params[8];
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[1] = params[9];
+		}
+		if (params[10] != -1) {
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[2] = params[10];
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[2] = params[11];
+		}
+	}
+	return classid;
+}
+
+cell AMX_NATIVE_CALL CFunctionHooks::HookedAddPlayerClassEx(AMX* amx, cell* params)
+{
+	int
+		classid = sampgdk_AddPlayerClassEx(params[1], params[2], amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]), amx_ctof(params[6]), params[7], params[8], params[9], params[10], params[11], params[12]);
+
+	if (classid < MAX_CLASSES)
+	{
+		if (params[7] != -1) {
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[0] = params[7];
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[0] = params[8];
+		}
+		if (params[9] != -1) {
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[1] = params[9];
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[1] = params[10];
+		}
+		if (params[11] != -1) {
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[2] = params[11];
+			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[2] = params[12];
+		}
+	}
+	return classid;
 }
 
 cell AMX_NATIVE_CALL CFunctionHooks::HookedResetPlayerWeapons(AMX* amx, cell* params)
@@ -93,4 +154,21 @@ cell AMX_NATIVE_CALL CFunctionHooks::HookedTogglePlayerSpectating(AMX* amx, cell
 	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return NULL;
 	player->bHasPermissionToSpectate = bToggle;
 	return true;
+}
+
+cell AMX_NATIVE_CALL CFunctionHooks::HookedSetPlayerSpecialAction(AMX* amx, cell* params)
+{
+	PLAYERID playerID = (PLAYERID)params[1];
+	ePlayerData *player;
+	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return NULL;
+	player->iSpecialAction = (int)params[2];
+	return true;
+}
+
+cell AMX_NATIVE_CALL CFunctionHooks::HookedGetPlayerSpecialAction(AMX* amx, cell* params)
+{
+	PLAYERID playerID = (PLAYERID)params[1];
+	ePlayerData *player;
+	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return NULL;
+	return player->iSpecialAction;
 }

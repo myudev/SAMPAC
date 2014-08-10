@@ -32,6 +32,10 @@
 #define SAMPAC_OPPP (3)
 #define SAMPAC_OPD (4)
 #define SAMPAC_OPKSC (5)
+#define SAMPAC_OPRC (6)
+
+#define PRESSED(key) \
+	(((newkeys & (key)) == (key)) && ((oldkeys & (key)) != (key)))
 
 namespace CallbackHooks 
 {
@@ -42,6 +46,7 @@ namespace CallbackHooks
 	bool OnPlayerDeath(int playerid, int killerid, int reason);
 	bool OnPlayerUpdate(int playerid);
 	bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys);
+	bool OnPlayerRequestClass(int playerid, int classid);
 }
 
 #endif

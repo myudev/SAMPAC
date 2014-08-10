@@ -144,6 +144,16 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_CallbackHook(AMX *amx, cell *params)
 
 			return static_cast<cell>(CallbackHooks::OnPlayerKeyStateChange(static_cast<int>(*playerid), static_cast<int>(*keystateNew), static_cast<int>(*keystateOld)));
 		}
+		case SAMPAC_OPRC:
+		{
+			CHECK_PARAMS(3, "SAMPAC_CallbackHook");
+
+			cell *playerid = NULL, *classid = NULL;
+			amx_GetAddr(amx, params[2], &playerid);
+			amx_GetAddr(amx, params[4], &classid);
+
+			return static_cast<cell>(CallbackHooks::OnPlayerRequestClass(static_cast<int>(*playerid), static_cast<int>(*classid)));
+		}
 	}
 	return 0;
 }

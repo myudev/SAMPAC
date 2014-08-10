@@ -78,7 +78,7 @@ void CAntiCheat::Tick()
 
 				logprintf("vehicle %d, speed %f, max %f", vehicleID, currentSpeed, fMaxVehicleSpeed[vehicleModel]);
 				if (vehicleModel && currentSpeed) {
-					if (currentSpeed > fMaxVehicleSpeed[vehicleModel]) {
+					if (currentSpeed > (fMaxVehicleSpeed[vehicleModel] + 10.0f)) {
 						OnDetect(p->second, CHEAT_TYPE_SPEED_HACK, "%d:%f", vehicleID, currentSpeed);
 					}
 				}
@@ -114,6 +114,14 @@ void CAntiCheat::Tick()
 		if (bIsDetectionEnabled[CHEAT_TYPE_PING_LIMIT]) {
 			if (CPlayer::GetPing(p->second->iPlayerID) > set.g_iMaxPing) {
 				OnDetect(p->second, CHEAT_TYPE_PING_LIMIT, "\0");
+			}
+		}
+
+		// Anti Special Action (basically anti-jetpack)
+		if (bIsDetectionEnabled[CHEAT_TYPE_SPECIAL_ACTION]) {
+			int specialAction = CPlayer::GetSpecialAction(p->second->iPlayerID);
+			if (specialAction != p->second->iSpecialAction)  {
+				OnDetect(p->second, CHEAT_TYPE_SPECIAL_ACTION, "%d", specialAction);
 			}
 		}
 
@@ -156,7 +164,7 @@ bool CAntiCheat::AddPlayer(PLAYERID playerID)
 	ePlayerData p_PlayerData;
 
 	p_PlayerData.bHasPermissionToSpectate = false; // shall we ?
-	p_PlayerData.bHasWeapon[46] = true; // ignore parachute for now later a advanced detection with vehicles
+	ResetPlayerServerWeapons(p_PlayerData);
 	p_PlayerData.iPlayerID = playerID;
 
 	if (p == p_PlayerList.end())
@@ -220,22 +228,22 @@ void CAntiCheat::RapidPickupSpam(PLAYERID playerID, PICKUPID pickupID)
 	{
 		if( pickupID != player->iLastPickupID )
 		{
-			int iTickCount = (int)GetTickCount( ); // Call it once, because swag
-	        if( player->iPickupTimestamp > iTickCount )
+			int iTimestamp = (int)time(NULL); // Call it once, because swag
+			if (player->iPickupTimestamp > iTimestamp)
 	        {
 				Vec3 curPos;
 				CPlayer::GetPosition(player->iPlayerID, &curPos.fX,&curPos.fY,&curPos.fZ);
 	        	// He entered very fast, bad boy!!! Let's see how far it is though
 	        	float distance = player->vLastPickupPos.DistanceTo( &curPos );
 
-	        	if( distance < 100.0 ) logprintf("[AC WARN] Player ID %d has entered a pickup near him really fast. (distance: %0.2fm, time: %d)", (int)playerID, distance, player->iPickupTimestamp - iTickCount );
+				if (distance < 100.0) logprintf("[AC WARN] Player ID %d has entered a pickup near him really fast. (distance: %0.2fm, time: %d)", (int)playerID, distance, player->iPickupTimestamp - iTimestamp);
 	        	else 
 	        	{
-					OnDetect(player, CHEAT_TYPE_PICKUP_SPAM, "%d:%f:%d", pickupID, distance, player->iPickupTimestamp - iTickCount );
+					OnDetect(player, CHEAT_TYPE_PICKUP_SPAM, "%d:%f:%d", pickupID, distance, player->iPickupTimestamp - iTimestamp);
 		            return;
 	        	}
 	        }
-	        player->iPickupTimestamp = iTickCount + 1000;
+			player->iPickupTimestamp = iTimestamp + 1;
 			player->iLastPickupID = pickupID;		
 		}		
 	}
@@ -331,3 +339,36 @@ void CAntiCheat::WeaponHackCheck(PLAYERID playerID)
 		}
 	}*/
 }
+
+void CAntiCheat::WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW)
+{
+	ePlayerData *player;
+	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return;
+
+	// Can't be bothered hooking Onplayerspawn lol
+	if (stateNEW == PLAYER_STATE_SPAWNED)
+	{
+		for (int i = 0; i < 3; i++)
+			player->bHasWeapon[CSampServer::pServer->m_AvailableSpawns[player->iSelectedClass].iSpawnWeapons[i]] = true;
+	}
+
+	// Credits to wups
+	if (stateNEW == PLAYER_STATE_DRIVER || stateNEW == PLAYER_STATE_PASSENGER)
+	{
+		switch (CVehicle::GetModel(CPlayer::GetVehicle(playerID)))
+		{
+			case 457: 
+				player->bHasWeapon[2] = true;
+				break;
+
+			case 592: case 577: case 511: case 512: case 520: case 593: case 553: case 476: case 519: case 460: case 513: case 548: case 425: case 417: case 487: case 488: case 497: case 563: case 447: case 469: 
+				player->bHasWeapon[46] = true;
+				break;
+
+			case 596: case 597: case 598: case 599: 
+				player->bHasWeapon[25] = true;
+				break;
+		}
+	}
+}
+

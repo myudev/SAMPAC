@@ -34,6 +34,7 @@ bool CallbackHooks::OnPlayerConnect(int playerid)
 	if (!CPlayer::IsNPC(playerid))
 		return CAntiCheat::AddPlayer(playerid);
 
+
 	return true;
 }
 
@@ -50,6 +51,7 @@ bool CallbackHooks::OnPlayerStateChange(int playerid, int newstate, int oldstate
 {
 	if (!CPlayer::IsNPC(playerid)) {
 		CAntiCheat::CarWarpCheck(playerid, newstate);
+		CAntiCheat::WeaponHackStateFix(playerid, newstate);
 		return true;
 	}
 	return true;
@@ -84,6 +86,16 @@ bool CallbackHooks::OnPlayerUpdate(int playerid)
 bool CallbackHooks::OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys)
 {
 	if (!CPlayer::IsNPC(playerid)) {
+		return true;
+	}
+	return true;
+}
+
+bool CallbackHooks::OnPlayerRequestClass(int playerid, int classid)
+{
+	if (!CPlayer::IsNPC(playerid)) {
+		ePlayerData *player;
+		if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) player->iSelectedClass = classid; // Needed to get the class weapons.
 		return true;
 	}
 	return true;
