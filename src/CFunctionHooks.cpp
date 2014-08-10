@@ -83,7 +83,7 @@ cell AMX_NATIVE_CALL CFunctionHooks::HookedAddPlayerClass(AMX* amx, cell* params
 
 				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeapons[2] = static_cast<int>(params[10]);
 				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeaponsAmmo[2] = static_cast<int>(params[11]);
-
+				CSampServer::pServer->iSpawnAvailable ++;
 				break;
 			}
 		}
@@ -121,7 +121,7 @@ int
 
 				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeapons[2] = static_cast<int>(params[11]);
 				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeaponsAmmo[2] = static_cast<int>(params[12]);
-
+				CSampServer::pServer->iSpawnAvailable ++;
 				break;
 			}
 		}
