@@ -50,7 +50,7 @@ void CAntiCheat::Init()
 // Invoked by ProcessTick
 void CAntiCheat::Tick()
 {
-	logprintf("CAntiCheat::Tick()");
+	//logprintf("CAntiCheat::Tick()");
 	Vec3 tVec; // Temporary 3D Vector
 	for (boost::unordered_map<PLAYERID, ePlayerData*>::iterator p = p_PlayerList.begin(); p != p_PlayerList.end(); ++p)
 	{

@@ -152,7 +152,9 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick()
 
 		CSampServer::TryInitzializeSAMP();
 
+
 		CAntiCheat::Tick();
+
 		g_iTicksDone = 0;
 	}
 	g_iTicksDone++;

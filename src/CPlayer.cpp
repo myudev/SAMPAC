@@ -25,6 +25,7 @@
 
 #include "main.h"
 #include "CPlayer.h"
+#include "CAntiCheat.h"
 #include <sampgdk/a_players.h>
 
 void CPlayer::SetPosition ( PLAYERID playerID, float fX, float fY, float fZ ) 
@@ -84,7 +85,7 @@ void CPlayer::GetWeaponData ( PLAYERID playerID, short sIndex, int *iWeap, int *
 bool CPlayer::IsNPC ( PLAYERID playerID ) 
 { 
 	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
-		return 0;
+		return CSampServer::pServer->pPlayerPool->bIsPlayerConnected [ playerID ];
 	} 
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_IsPlayerNPC(playerID);
@@ -95,7 +96,10 @@ bool CPlayer::IsNPC ( PLAYERID playerID )
 VEHICLEID CPlayer::GetVehicle ( PLAYERID playerID ) 
 { 
 	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
-		return INVALID_VEHICLE_ID;	
+		CSAMPPlayer *player;
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return ;}
+
+		return player->wVehicleId;	
 	} 
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_GetPlayerVehicleID(playerID);
@@ -106,7 +110,10 @@ VEHICLEID CPlayer::GetVehicle ( PLAYERID playerID )
 bool CPlayer::IsInVehicle(PLAYERID playerID)
 {
 	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
-		return false;
+		CSAMPPlayer *player;
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return ;}
+
+		return ( player->wVehicleId > 0 && player->wVehicleId < 1000 );	
 	}
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_IsPlayerInAnyVehicle(playerID);
@@ -117,7 +124,7 @@ bool CPlayer::IsInVehicle(PLAYERID playerID)
 int CPlayer::GetMoney ( PLAYERID playerID ) 
 { 
 	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
-		return 0;
+		return CAntiCheat::GetPlayerByID ( playerID )->iPlayerMoney;
 	} 
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_GetPlayerMoney(playerID);
@@ -128,7 +135,7 @@ int CPlayer::GetMoney ( PLAYERID playerID )
 void CPlayer::SetMoney ( PLAYERID playerID, int iMoney ) 
 { 
 	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
-		
+		/* add raknet stuff here later */
 	} 
 	else { // Fallback SAMPGDK :'(
 		sampgdk_ResetPlayerMoney(playerID);
@@ -139,7 +146,9 @@ void CPlayer::SetMoney ( PLAYERID playerID, int iMoney )
 int CPlayer::GetState ( PLAYERID playerID ) 
 {
 	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
-		return 0;
+		CSAMPPlayer *player;
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return ;}
+		return player->byteState;
 	} 
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_GetPlayerState(playerID);
@@ -159,7 +168,7 @@ int CPlayer::GetPing ( PLAYERID playerID )
 int CPlayer::GetWeapon(PLAYERID playerID)
 {
 	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
-		return 0xFFFF;
+		return 0xFFFF; /* add raknet stuff here, as it's saved in the RakServer interface (easy function call) */
 	}
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_GetPlayerWeapon(playerID);

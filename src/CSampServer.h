@@ -29,12 +29,13 @@
 enum eSampVersion {
 	INVALID_VERSION,
 	SAMP_03Z,
-	SAMP_03Z_R2
+	SAMP_03Z_R2,
+	SAMP_03Z_R3
 };
 
 // Here belongs memory h4xoring stuff.
 #define PAD(a, b)			char a[b]
-#define BOOL				bool
+//#define BOOL				bool // im dumb lol...
 #define WORD				unsigned int
 #define BYTE				byte
 /*
@@ -223,6 +224,7 @@ typedef struct SPAWN_INFO
 	int iSpawnWeaponsAmmo[3];
 } PLAYER_SPAWN_INFO;
 #pragma pack(pop)
+
 
 #pragma pack(push, 1)
 class CNetGame

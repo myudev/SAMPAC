@@ -34,31 +34,69 @@ void CSampServer::TryInitzializeSAMP()
 
 	if ( pServer != NULL ) return;
 
+	#ifdef WIN32
+		#define ADDR_VERSION_03Z	(0x4B1BBC)
+		#define ADDR_CNETGAME_03Z	(0x4F234C)
+
+		#define ADDR_VERSION_03ZR2	(0x4B1CF4)
+		#define ADDR_CNETGAME_03ZR2	(0x4F2370)
+
+		#define ADDR_VERSION_03ZR3	(0x4B1B04)
+		#define ADDR_CNETGAME_03ZR3	(0x4F339C)	
+	#else
+		#define ADDR_VERSION_03Z	(0x814F973)
+		#define ADDR_CNETGAME_03Z	(0x819A564)
+
+		#define ADDR_VERSION_03ZR2	(0x814FCF9)
+		#define ADDR_CNETGAME_03ZR2	(0x819B8E4)
+
+		#define ADDR_VERSION_03ZR3	(0x8150BCC)
+		#define ADDR_CNETGAME_03ZR3	(0x819C9EC)
+	#endif
+
+
 #ifdef WIN32
 
-	if (  strcmp(((char*)0x4B1BBC),  "0.3z")  ) // 0.3z SA:MP Server (0x4B1BBC is the SA:MP Version string).
+	if (  strstr(((char*)ADDR_VERSION_03Z),  "0.3z") != NULL   ) // 0.3z SA:MP Server (0x4B1BBC is the SA:MP Version string).
 	{
-		pServer = *(CNetGame**)0x4F234C;
+		pServer = *(CNetGame**)ADDR_CNETGAME_03Z;
 		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z;
+		logprintf ( "[ANTICHEAT:] Running in SA-MP 0.3z compatible mode.");
 	}
-	else if (  strcmp(((char*)0x4B1CF4),  "0.3z-R2")  )
+	else if (  strstr(((char*)ADDR_VERSION_03ZR2),  "0.3z-R2") != NULL   )
 	{
-		pServer = *(CNetGame**)0x4F2370;
+		pServer = *(CNetGame**)ADDR_CNETGAME_03ZR2;
 		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z_R2;
+		logprintf ( "[ANTICHEAT:] Running in SA-MP 0.3z-R2 compatible mode.");
+	}
+	else if (  strstr(((char*)ADDR_VERSION_03ZR3),  "0.3z-R3") != NULL  )
+	{
+		pServer = *(CNetGame**)ADDR_CNETGAME_03ZR3;
+
+		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z_R3;
+		logprintf ( "[ANTICHEAT:] Running in SA-MP 0.3z-R3 compatible mode.");
 	}
 	else { i_SAMPVersion = INVALID_VERSION; }
 
 	//logprintf("%d = %d", i_SAMPVersion, INVALID_VERSION);
 #else
-	if (  strcmp(((char*)0x814F973),  "0.3z")  ) // 0.3z SA:MP Server (0x4B1BBC is the SA:MP Version string).
+	if (  strstr(((char*)ADDR_VERSION_03Z),  "0.3z") != NULL  ) // 0.3z SA:MP Server (0x4B1BBC is the SA:MP Version string).
 	{
-		pServer = *(CNetGame**)0x819A564;
+		pServer = *(CNetGame**)ADDR_CNETGAME_03Z;
 		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z;
+		logprintf ( "[ANTICHEAT:] Running in SA-MP 0.3z compatible mode.");
 	}
-	else if (  strcmp(((char*)0x814FCF9),  "0.3z-R2")  )
+	else if (  strstr(((char*)ADDR_VERSION_03ZR2),  "0.3z-R2") != NULL )
 	{
-		pServer = *(CNetGame**)0x819B8E4;
+		pServer = *(CNetGame**)ADDR_CNETGAME_03ZR2;
 		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z_R2;
+		logprintf ( "[ANTICHEAT:] Running in SA-MP 0.3z-R2 compatible mode.");
+	}
+	else if (  strstr(((char*)ADDR_VERSION_03ZR3),  "0.3z-R3") != NULL )
+	{
+		pServer = *(CNetGame**)ADDR_CNETGAME_03ZR3;
+		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z_R3;
+		logprintf ( "[ANTICHEAT:] Running in SA-MP 0.3z-R3 compatible mode.");
 	}
 	else { i_SAMPVersion = INVALID_VERSION; }
 #endif
@@ -70,6 +108,6 @@ CSAMPPlayer* CSampServer::GetCPlayer(PLAYERID playerID)
 	if ( !SAMP_IS_VALID_PLAYERID(playerID) ) return NULL;
 	if ( pServer == NULL )					 return NULL;
 	if ( pServer->pPlayerPool == NULL )      return NULL;
-
+	
 	return pServer->pPlayerPool->pPlayer[playerID];
 }
