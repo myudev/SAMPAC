@@ -218,7 +218,7 @@ typedef struct SPAWN_INFO
 	BYTE bTeam;
 	int iSkin;
 	BYTE byteUnk; // something releated to ???
-	Vec3 vecPos[3];
+	Vec3 vecPos;
 	float fRotation;
 	int iSpawnWeapons[3];
 	int iSpawnWeaponsAmmo[3];

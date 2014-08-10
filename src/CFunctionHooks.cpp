@@ -60,48 +60,75 @@ cell AMX_NATIVE_CALL CFunctionHooks::HookedSetSpawnInfo(AMX* amx, cell* params)
 cell AMX_NATIVE_CALL CFunctionHooks::HookedAddPlayerClass(AMX* amx, cell* params)
 {
 	int
-		classid = sampgdk_AddPlayerClass(params[1], amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]), params[6], params[7], params[8], params[9], params[10], params[11]);
-	
-	// Crashes the server lol
-	/*
-	if (classid < MAX_CLASSES)
+		classid;
+
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION )
 	{
-		if (params[6] != -1) {
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[0] = params[6];
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[0] = params[7];
+		for ( classid = 0; classid != MAX_CLASSES; classid ++ )
+		{
+			if ( CSampServer::pServer->m_AvailableSpawns[classid].vecPos.fX == 0.0 )
+			{
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSkin = static_cast<int>(params[1]);
+
+				CSampServer::pServer->m_AvailableSpawns [ classid ].vecPos.fX = amx_ctof(params[2]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].vecPos.fY = amx_ctof(params[3]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].vecPos.fZ = amx_ctof(params[4]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].fRotation = amx_ctof(params[5]);
+
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeapons[0] = static_cast<int>(params[6]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeaponsAmmo[0] = static_cast<int>(params[7]);
+
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeapons[1] = static_cast<int>(params[8]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeaponsAmmo[1] = static_cast<int>(params[9]);
+
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeapons[2] = static_cast<int>(params[10]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeaponsAmmo[2] = static_cast<int>(params[11]);
+
+				break;
+			}
 		}
-		if (params[8] != -1) {
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[1] = params[8];
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[1] = params[9];
-		}
-		if (params[10] != -1) {
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[2] = params[10];
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[2] = params[11];
-		}
-	}*/
+	}
+	else 
+		return sampgdk_AddPlayerClass(params[1], amx_ctof(params[2]), amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]), params[6], params[7], params[8], params[9], params[10], params[11]);
+
 	return classid;
 }
 
 cell AMX_NATIVE_CALL CFunctionHooks::HookedAddPlayerClassEx(AMX* amx, cell* params)
 {
-	int
-		classid = sampgdk_AddPlayerClassEx(params[1], params[2], amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]), amx_ctof(params[6]), params[7], params[8], params[9], params[10], params[11], params[12]);
+int
+		classid;
 
-	if (classid < MAX_CLASSES)
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION )
 	{
-		if (params[7] != -1) {
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[0] = params[7];
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[0] = params[8];
-		}
-		if (params[9] != -1) {
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[1] = params[9];
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[1] = params[10];
-		}
-		if (params[11] != -1) {
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeapons[2] = params[11];
-			CSampServer::pServer->m_AvailableSpawns[classid].iSpawnWeaponsAmmo[2] = params[12];
+		for ( classid = 0; classid != MAX_CLASSES; classid ++ )
+		{
+			if ( CSampServer::pServer->m_AvailableSpawns[classid].vecPos.fX == 0.0 )
+			{
+				CSampServer::pServer->m_AvailableSpawns [ classid ].bTeam = static_cast<int>(params[1]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSkin = static_cast<int>(params[2]);
+
+				CSampServer::pServer->m_AvailableSpawns [ classid ].vecPos.fX = amx_ctof(params[3]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].vecPos.fY = amx_ctof(params[4]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].vecPos.fZ = amx_ctof(params[5]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].fRotation = amx_ctof(params[6]);
+
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeapons[0] = static_cast<int>(params[7]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeaponsAmmo[0] = static_cast<int>(params[8]);
+
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeapons[1] = static_cast<int>(params[9]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeaponsAmmo[1] = static_cast<int>(params[10]);
+
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeapons[2] = static_cast<int>(params[11]);
+				CSampServer::pServer->m_AvailableSpawns [ classid ].iSpawnWeaponsAmmo[2] = static_cast<int>(params[12]);
+
+				break;
+			}
 		}
 	}
+	else 
+		return sampgdk_AddPlayerClassEx(params[1], params[2], amx_ctof(params[3]), amx_ctof(params[4]), amx_ctof(params[5]), amx_ctof(params[6]), params[7], params[8], params[9], params[10], params[11], params[12]);
+
 	return classid;
 }
 

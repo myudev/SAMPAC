@@ -30,7 +30,13 @@ eSampVersion		CSampServer::i_SAMPVersion = INVALID_VERSION;
 
 void CSampServer::TryInitzializeSAMP()
 {
-	/* Before anyone asks, i am not using any patterns or SA:MP export as they can be removed also with this checking we ensure that we don't call free space and cause a corruption. */
+	/*
+		Again if someone asks, why not use the damn patterns?
+		THE answer is SIMPLE:
+		An Anticheat should be reliable, and should work without any worrys.
+		If we would use patterns, the Plug-in will think we are 99% Updated (means the offsets are right).
+		But in other ways, we CAN'T be sure if the internal structures got changed, that will maybe lead into random access violation(s), or crashes and we DONT want that.
+	*/
 
 	if ( pServer != NULL ) return;
 
