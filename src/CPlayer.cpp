@@ -29,8 +29,19 @@
 #include <sampgdk/a_players.h>
 
 void CPlayer::SetPosition ( PLAYERID playerID, float fX, float fY, float fZ ) 
-{ // No Fallback to sampgdk, theres actually no way of position setting via. pure data
-	sampgdk_SetPlayerPos(playerID, fX, fY, fZ);
+{
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) 
+	{
+		RakNet::BitStream bs;
+		bs.Write ( fX );
+		bs.Write ( fY );
+		bs.Write ( fZ );
+		PlayerID playerId = CSampServer::pServer->pRakServer->GetPlayerIDFromIndex ( playerID );
+		if ( playerId.binaryAddress != 0xFFFFFFFF )
+			CSampServer::pServer->pRakServer->RPC ( &CSampServer::rpcIDS.RPC_SET_POS, &bs, HIGH_PRIORITY, RELIABLE_ORDERED, 2, playerId, 0, 0 );
+	}
+	else
+		sampgdk_SetPlayerPos(playerID, fX, fY, fZ);
 }
 
 void CPlayer::GetPosition ( PLAYERID playerID, float *fX, float *fY, float *fZ ) 
@@ -49,8 +60,19 @@ void CPlayer::GetPosition ( PLAYERID playerID, float *fX, float *fY, float *fZ )
 }
 
 void CPlayer::SetVelocity ( PLAYERID playerID, float fX, float fY, float fZ ) 
-{  // No Fallback to sampgdk, theres actually no way of position setting via. pure data (ok there kinda is)
-	sampgdk_SetPlayerVelocity(playerID, fX, fY, fZ);
+{
+	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) 
+	{
+		RakNet::BitStream bs;
+		bs.Write ( fX );
+		bs.Write ( fY );
+		bs.Write ( fZ );
+		PlayerID playerId = CSampServer::pServer->pRakServer->GetPlayerIDFromIndex ( playerID );
+		if ( playerId.binaryAddress != 0xFFFFFFFF )
+			CSampServer::pServer->pRakServer->RPC ( &CSampServer::rpcIDS.RPC_SET_VELOCITY, &bs, HIGH_PRIORITY, RELIABLE_ORDERED, 2, playerId, 0, 0 );
+	}
+	else
+		sampgdk_SetPlayerVelocity(playerID, fX, fY, fZ);
 }
 
 void CPlayer::GetVelocity ( PLAYERID playerID, float *fX, float *fY, float *fZ ) 
@@ -85,10 +107,10 @@ void CPlayer::GetWeaponData ( PLAYERID playerID, short sIndex, int *iWeap, int *
 bool CPlayer::IsNPC ( PLAYERID playerID ) 
 { 
 	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
-		return CSampServer::pServer->pPlayerPool->bIsPlayerConnected [ playerID ];
+		return !!CSampServer::pServer->pPlayerPool->mIsNPC [ playerID ];
 	} 
 	else { // Fallback SAMPGDK :'(
-		return sampgdk_IsPlayerNPC(playerID);
+		return sampgdk_IsPlayerNPC(playerID);//
 	}
 	return 0;
 }
@@ -97,7 +119,7 @@ VEHICLEID CPlayer::GetVehicle ( PLAYERID playerID )
 { 
 	if ( CSampServer::i_SAMPVersion != INVALID_VERSION ) {
 		CSAMPPlayer *player;
-		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return ;}
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return -1;}
 
 		return player->wVehicleId;	
 	} 
@@ -111,7 +133,7 @@ bool CPlayer::IsInVehicle(PLAYERID playerID)
 {
 	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
 		CSAMPPlayer *player;
-		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return ;}
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return false;}
 
 		return ( player->wVehicleId > 0 && player->wVehicleId < 1000 );	
 	}
@@ -147,7 +169,7 @@ int CPlayer::GetState ( PLAYERID playerID )
 {
 	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
 		CSAMPPlayer *player;
-		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return ;}
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return PLAYER_STATE_NONE;}
 		return player->byteState;
 	} 
 	else { // Fallback SAMPGDK :'(
@@ -158,7 +180,11 @@ int CPlayer::GetState ( PLAYERID playerID )
 int CPlayer::GetPing ( PLAYERID playerID )
 {
 	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
-		return 0xFFFF;
+		PlayerID playerId = CSampServer::pServer->pRakServer->GetPlayerIDFromIndex ( playerID );
+		if ( playerId.binaryAddress != 0xFFFFFFFF )
+			return CSampServer::pServer->pRakServer->GetLastPing ( playerId );
+		else
+			return 0xFFFF;
 	}
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_GetPlayerPing(playerID);
@@ -168,7 +194,10 @@ int CPlayer::GetPing ( PLAYERID playerID )
 int CPlayer::GetWeapon(PLAYERID playerID)
 {
 	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
-		return 0xFFFF; /* add raknet stuff here, as it's saved in the RakServer interface (easy function call) */
+
+		CSAMPPlayer *player;
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return 0;}
+		return player->syncData.byteWeapon;
 	}
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_GetPlayerWeapon(playerID);
@@ -178,7 +207,9 @@ int CPlayer::GetWeapon(PLAYERID playerID)
 int CPlayer::GetAnimationIndex(PLAYERID playerID)
 {
 	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
-		return 0;
+		CSAMPPlayer *player;
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return 0;}
+		return player->syncData.iAnimationId;
 	}
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_GetPlayerAnimationIndex(playerID);
@@ -188,7 +219,9 @@ int CPlayer::GetAnimationIndex(PLAYERID playerID)
 int CPlayer::GetSpecialAction(PLAYERID playerID)
 {
 	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
-		return 0;
+		CSAMPPlayer *player;
+		if ( (player=CSampServer::GetCPlayer(playerID)) == NULL )	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return 0;}
+		return player->syncData.byteSpecialAction;
 	}
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_GetPlayerSpecialAction(playerID);

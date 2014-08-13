@@ -57,6 +57,7 @@
 #include <string.h>
 #include "typedef.h"
 #include <sampgdk/a_samp.h>
+#include "BitStream.h"
 #include "CSampServer.h"
 
 typedef void (*logprintf_t)(const char*, ...);

@@ -73,6 +73,9 @@
     <ClCompile Include="src\CFunctionHooks.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\BitStream.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\boost\system\src\local_free_on_destruction.hpp">
@@ -168,6 +171,9 @@
     <ClInclude Include="src\CFunctionHooks.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\BitStream.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="lib">
@@ -195,8 +201,5 @@
   <ItemGroup>
     <None Include="..\todo.txt" />
     <None Include="ThemAC.def" />
-    <None Include="src\vehiclespeedlist.var">
-      <Filter>src</Filter>
-    </None>
   </ItemGroup>
 </Project>

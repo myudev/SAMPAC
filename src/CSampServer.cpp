@@ -27,6 +27,8 @@
 
 CNetGame*			CSampServer::pServer = NULL;
 eSampVersion		CSampServer::i_SAMPVersion = INVALID_VERSION;
+RPCS				rpcIDS;
+bool				bIsMajorZVersion = false;
 
 void CSampServer::TryInitzializeSAMP()
 {
@@ -49,6 +51,9 @@ void CSampServer::TryInitzializeSAMP()
 
 		#define ADDR_VERSION_03ZR3	(0x4B1B04)
 		#define ADDR_CNETGAME_03ZR3	(0x4F339C)	
+
+		#define ADDR_VERSION_03ZR4	(0x4B1E14)
+		#define ADDR_CNETGAME_03ZR4	(0x4F33A0)	
 	#else
 		#define ADDR_VERSION_03Z	(0x814F973)
 		#define ADDR_CNETGAME_03Z	(0x819A564)
@@ -58,6 +63,9 @@ void CSampServer::TryInitzializeSAMP()
 
 		#define ADDR_VERSION_03ZR3	(0x8150BCC)
 		#define ADDR_CNETGAME_03ZR3	(0x819C9EC)
+
+		#define ADDR_VERSION_03ZR4	(0x8150BCC) // still R3 P:
+		#define ADDR_CNETGAME_03ZR4	(0x819C9EC) // still R3 P:
 	#endif
 
 
@@ -68,12 +76,14 @@ void CSampServer::TryInitzializeSAMP()
 		pServer = *(CNetGame**)ADDR_CNETGAME_03Z;
 		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z;
 		logprintf ( "[ANTICHEAT:] Running in SA-MP 0.3z compatible mode.");
+		bIsMajorZVersion = true;
 	}
 	else if (  strstr(((char*)ADDR_VERSION_03ZR2),  "0.3z-R2") != NULL   )
 	{
 		pServer = *(CNetGame**)ADDR_CNETGAME_03ZR2;
 		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z_R2;
 		logprintf ( "[ANTICHEAT:] Running in SA-MP 0.3z-R2 compatible mode.");
+		bIsMajorZVersion = true;
 	}
 	else if (  strstr(((char*)ADDR_VERSION_03ZR3),  "0.3z-R3") != NULL  )
 	{
@@ -81,8 +91,24 @@ void CSampServer::TryInitzializeSAMP()
 
 		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z_R3;
 		logprintf ( "[ANTICHEAT:] Running in SA-MP 0.3z-R3 compatible mode.");
+		bIsMajorZVersion = true;
+	}
+	else if (  strstr(((char*)ADDR_VERSION_03ZR4),  "0.3z-R4") != NULL  )
+	{
+		pServer = *(CNetGame**)ADDR_CNETGAME_03ZR4;
+
+		if ( pServer != NULL ) i_SAMPVersion = SAMP_03Z_R4;
+		logprintf ( "[ANTICHEAT:] Running in SA-MP 0.3z-R4 compatible mode.");
+		bIsMajorZVersion = true;
 	}
 	else { i_SAMPVersion = INVALID_VERSION; }
+
+	/* Only 0.3z atm, since the RPC's only change at every X Client Release we don't need own ids for every server version */
+	if ( bIsMajorZVersion )
+	{
+		rpcIDS.RPC_SET_POS = 12;
+		rpcIDS.RPC_SET_VELOCITY = 90;
+	}
 
 	//logprintf("%d = %d", i_SAMPVersion, INVALID_VERSION);
 #else
