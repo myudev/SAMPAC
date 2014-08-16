@@ -99,3 +99,18 @@ bool CallbackHooks::OnPlayerRequestClass(int playerid, int classid)
 	}
 	return true;
 }
+
+bool CallbackHooks::OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid)
+{
+	if (!CPlayer::IsNPC(playerid)) {
+		ePlayerData *player;
+		if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) {
+			if (bIsDetectionEnabled[CHEAT_TYPE_HEALTH_HACK]) {
+				if ((player->fHealth -= amount) < 0.0)
+					player->fHealth = 0.0;
+			}
+		}
+		return true;
+	}
+	return true;
+}

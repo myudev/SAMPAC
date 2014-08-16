@@ -195,3 +195,17 @@ cell AMX_NATIVE_CALL CFunctionHooks::HookedSetPlayerSpecialAction(AMX* amx, cell
 	return sampgdk_SetPlayerSpecialAction(playerID, specialAction);
 }
 
+cell AMX_NATIVE_CALL CFunctionHooks::HookedSetPlayerHealth(AMX* amx, cell* params)
+{
+	PLAYERID playerID = (PLAYERID)params[1];
+	float	 fHealth = (float)params[2];
+	ePlayerData *player;
+	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return NULL;
+
+	if (fHealth > 99.0) fHealth = 99.0;
+	if (fHealth < 0.0) fHealth = 0.0;
+
+	player->bHealthSynced = false;
+	player->fHealth = fHealth;
+	return sampgdk_SetPlayerHealth(playerID, fHealth);
+}

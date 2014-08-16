@@ -57,6 +57,11 @@ void CAntiCheat::Tick()
 		p->second->iPlayerID = p->first; // Bug fix
 		p->second->iState = CPlayer::GetState(p->first) ; // Save State for Later processing.
 
+		// Health Hack/Armour Hack
+		if (bIsDetectionEnabled[CHEAT_TYPE_HEALTH_HACK]) {
+			CAntiCheat::HealthHackCheck(p->second->iPlayerID);
+		}
+
 		// Anti-Weapon Hack
 		if (bIsDetectionEnabled[CHEAT_TYPE_WEAPON]) {
 			CAntiCheat::WeaponHackCheck(p->second->iPlayerID);
@@ -167,6 +172,7 @@ bool CAntiCheat::AddPlayer(PLAYERID playerID)
 	p_PlayerData.iPlayerID = playerID;
 	p_PlayerData.bHasPermissionToSpectate = false; // shall we ?
 	p_PlayerData.iSelectedClass = 0;
+	p_PlayerData.iHealthFailCount = 0;
 	ResetPlayerServerWeapons(p_PlayerData);
 
 	if (p == p_PlayerList.end())
@@ -379,3 +385,60 @@ bool CAntiCheat::WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW)
 	return true;
 }
 
+bool CAntiCheat::HealthHackCheck(PLAYERID playerID)
+{
+	ePlayerData *player;
+	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) 
+		return false;
+
+	if (player->iState == PLAYER_STATE_SPECTATING || player->iState == PLAYER_STATE_WASTED) 
+		return false;
+
+	float currentHealth = CPlayer::GetHealth(playerID);
+
+	int currentHealthInt = (int)roundf(currentHealth);
+	int healthShouldBeInt = (int)roundf(player->fHealth);
+
+	player->fHealth = currentHealth;
+
+	if (currentHealthInt == healthShouldBeInt) player->bHealthSynced = true;
+
+	if (!player->bHealthSynced)
+	{
+		if (currentHealthInt > healthShouldBeInt)
+		{
+			switch (++player->iHealthFailCount)
+			{
+				case 15: case 30:
+				{
+					logprintf("[AC] %d Health Desynced For %ds Attempting To Resync %d/%d", playerID, player->iHealthFailCount, currentHealthInt, healthShouldBeInt);//warn the admins about players health being desynched, this is a custom function, don't complain when it doesn't work for you
+					CPlayer::SetHealth(playerID, player->fHealth);//try to set the players health to what it should be
+				}
+				/*case 60:
+				{					
+					TimeOut(playerid, "Health Desynced For Over 1min");//if they don't resynch their health for x then they probably won't ever, just make them rejoin
+					return 1;
+				}*/
+			}
+		}
+	}
+	else
+	{
+		player->iHealthFailCount = 0;
+		if (healthShouldBeInt > currentHealthInt)// if their health has dropped and they are synched
+			player->fHealth = currentHealth;
+
+		if (currentHealthInt > healthShouldBeInt && currentHealthInt <= 100 && currentHealthInt  > 0)
+		{
+			logprintf("[AC] %d Health Desynced For %ds Attempting To Resync %d/%d", playerID, player->iHealthFailCount, currentHealthInt, healthShouldBeInt);
+			CPlayer::SetHealth(playerID, (player->fHealth = currentHealth));
+		}
+
+		if (currentHealthInt > 100 || currentHealthInt < 0)
+		{
+			OnDetect(player, CHEAT_TYPE_HEALTH_HACK, "\0", playerID);
+			return true;
+		}
+	}
+	return false;
+}

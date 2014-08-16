@@ -35,7 +35,7 @@
 	for (int i = 0; i < MAX_WEAPS; i++) player.bHasWeapon[i] = false;
 
 // TODO: Cleanup
-#define MAX_DETECTIONS 11
+#define MAX_DETECTIONS 12
 enum eCheatType {
 	CHEAT_TYPE_WEAPON,
 	CHEAT_TYPE_CARWARP,
@@ -47,7 +47,8 @@ enum eCheatType {
 	CHEAT_TYPE_REMOTE_JACK,
 	CHEAT_TYPE_PING_LIMIT,
 	CHEAT_TYPE_SPEED_HACK,
-	CHEAT_TYPE_JETPACK
+	CHEAT_TYPE_JETPACK,
+	CHEAT_TYPE_HEALTH_HACK
 };
 extern bool bIsDetectionEnabled[MAX_DETECTIONS];
 
@@ -75,6 +76,10 @@ struct ePlayerData {
 
 	Vec3 vLastPickupPos;
 	Vec3 vLastValidPos;
+
+	float fHealth;
+	bool bHealthSynced;
+	int iHealthFailCount;
 };
 
 namespace CAntiCheat {
@@ -91,6 +96,7 @@ namespace CAntiCheat {
 	void	RemoteJackingCheck(PLAYERID playerID);
 	void	WeaponHackCheck(PLAYERID playerID);
 	bool	WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW);
+	bool	HealthHackCheck(PLAYERID playerID);
 
 	ePlayerData* GetPlayerByID(PLAYERID playerID);
 };

@@ -227,3 +227,27 @@ int CPlayer::GetSpecialAction(PLAYERID playerID)
 		return sampgdk_GetPlayerSpecialAction(playerID);
 	}
 }
+
+bool CPlayer::SetHealth(PLAYERID playerID, float fHealth)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		/* add raknet stuff here later */
+		return false;
+	}
+	else { // Fallback SAMPGDK :'(
+		return sampgdk_SetPlayerHealth(playerID, fHealth);
+	}
+}
+
+float CPlayer::GetHealth(PLAYERID playerID)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		CSAMPPlayer *player;
+		if ((player = CSampServer::GetCPlayer(playerID)) == NULL)	{ logprintf("Error, structures may be incorrect contact the Author(s)"); return 0; }
+		return player->syncData.byteHealth;
+	}
+	else { // Fallback SAMPGDK :'(
+		float fHealth;
+		return sampgdk_GetPlayerHealth(playerID, &fHealth) ? fHealth : 0.0f;
+	}
+}

@@ -47,6 +47,9 @@ namespace CPlayer {
 	int GetAnimationIndex	(PLAYERID playerID);
 	int GetSpecialAction	(PLAYERID playerID);
 
+	bool SetHealth			(PLAYERID playerID, float fHealth);
+	float GetHealth			(PLAYERID playerID);
+
 	// Settings Data
 	void SetPosition		(PLAYERID playerID, float fX, float fY, float fZ);
 	void SetVelocity		(PLAYERID playerID, float fX, float fY, float fZ);

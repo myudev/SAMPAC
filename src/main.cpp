@@ -148,6 +148,13 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX *amx)
 
 		}
 
+		if (bIsDetectionEnabled[CHEAT_TYPE_HEALTH_HACK])
+		{
+			if (!strcmp("SetPlayerHealth", GETENTRYNAME(hdr, func)))
+				func->address = (ucell)CFunctionHooks::HookedSetPlayerHealth;
+
+		}
+
 	}
 
 	return amx_Register(amx, sNatives, -1);

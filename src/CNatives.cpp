@@ -150,9 +150,21 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_CallbackHook(AMX *amx, cell *params)
 
 			cell *playerid = NULL, *classid = NULL;
 			amx_GetAddr(amx, params[2], &playerid);
-			amx_GetAddr(amx, params[4], &classid);
+			amx_GetAddr(amx, params[3], &classid);
 
 			return static_cast<cell>(CallbackHooks::OnPlayerRequestClass(static_cast<int>(*playerid), static_cast<int>(*classid)));
+		}
+		case SAMPAC_OPTD:
+		{							
+			CHECK_PARAMS(5, "SAMPAC_CallbackHook");
+
+			cell *playerid = NULL, *issuerid = NULL, *amount = NULL, *weaponid = NULL;
+			amx_GetAddr(amx, params[2], &playerid);
+			amx_GetAddr(amx, params[3], &issuerid);
+			amx_GetAddr(amx, params[4], &amount);
+			amx_GetAddr(amx, params[5], &weaponid);
+
+			return static_cast<cell>(CallbackHooks::OnPlayerTakeDamage(static_cast<int>(*playerid), static_cast<int>(*issuerid), static_cast<float>(*amount), static_cast<int>(*weaponid)));
 		}
 	}
 	return 0;
