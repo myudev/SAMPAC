@@ -4,7 +4,6 @@
 	AUTHOR(S)	<>	Lorenc_ (zeelorenc@hotmail.com)
 	PURPOSE		<>  Providing datastructures for the internal SA:MP Server.
 
-
 	Copyright (C) 2014 SA:MP Anticheat Plug-in.
 
 	The Project is available on https://github.com/myudev/SAMPAC
@@ -64,6 +63,7 @@ forward SAMPAC_OnCheatDetect(playerid, detection, extrainfo[]);
 #define SAMPAC_OPD 					( 4 )
 #define SAMPAC_OPKSC 				( 5 )
 #define SAMPAC_OPRC  				( 6 )
+#define SAMPAC_OPTD  				( 7 )
 
 // Hook (OnPlayerConnect)
 
@@ -218,6 +218,28 @@ public OnPlayerRequestClass(playerid, classid)
 	#define _ALS_OnPlayerRequestClass
 #endif
 #define OnPlayerRequestClass SAMPAC_OnPlayerRequestClass
+
+// Hook (OnPlayerTakeDamage)
+
+public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
+{
+	SAMPAC_CallbackHook(SAMPAC_OPTD, playerid, classid);
+	#if defined SAMPAC_OnPlayerTakeDamage
+		return SAMPAC_OnPlayerTakeDamage(playerid, issuerid, amount, weaponid);
+	#else
+		return 1;
+	#endif
+}
+
+#if defined SAMPAC_OnPlayerTakeDamage
+	forward SAMPAC_OnPlayerTakeDamage(playerid, issuerid, Float: amount, weaponid);
+#endif
+#if defined _ALS_OnPlayerTakeDamage
+	#undef OnPlayerTakeDamage
+#else
+	#define _ALS_OnPlayerTakeDamage
+#endif
+#define OnPlayerTakeDamage SAMPAC_OnPlayerTakeDamage
 
 // Testing
 
