@@ -27,7 +27,7 @@
 
 CNetGame*			CSampServer::pServer = NULL;
 eSampVersion		CSampServer::i_SAMPVersion = INVALID_VERSION;
-RPCS				rpcIDS;
+RPCS				CSampServer::rpcIDS;
 bool				bIsMajorZVersion = false;
 
 void CSampServer::TryInitzializeSAMP()
