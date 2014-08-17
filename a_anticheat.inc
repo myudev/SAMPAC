@@ -4,6 +4,7 @@
 	AUTHOR(S)	<>	Lorenc_ (zeelorenc@hotmail.com)
 	PURPOSE		<>  Providing datastructures for the internal SA:MP Server.
 
+
 	Copyright (C) 2014 SA:MP Anticheat Plug-in.
 
 	The Project is available on https://github.com/myudev/SAMPAC
@@ -25,7 +26,7 @@
 #include 							< a_samp >
 
 // Enumerator
-enum eCheatTypes
+enum
 {
 	CHEAT_TYPE_WEAPON,
 	CHEAT_TYPE_CARWARP,
@@ -37,13 +38,14 @@ enum eCheatTypes
 	CHEAT_TYPE_REMOTE_JACK,
 	CHEAT_TYPE_PING_LIMIT,
 	CHEAT_TYPE_SPEED_HACK,
-	CHEAT_TYPE_SPECIAL_ACTION
+	CHEAT_TYPE_JETPACK,
+	CHEAT_TYPE_IMMUNITY
 };
 
 // Natives (Global)
 
 native SAMPAC_SetTickRate(maxticks);
-native SAMPAC_SetDetectionState(eCheatTypes:detection, bool:bState);
+native SAMPAC_SetDetectionState(detection, bool: bState);
 native SAMPAC_SetServerPingLimit(timems = -1);
 
 // Natives (Include Only)
@@ -221,18 +223,18 @@ public OnPlayerRequestClass(playerid, classid)
 
 // Hook (OnPlayerTakeDamage)
 
-public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid)
+public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 {
-	SAMPAC_CallbackHook(SAMPAC_OPTD, playerid, classid);
+	SAMPAC_CallbackHook(SAMPAC_OPTD, playerid, issuerid, amount, weaponid, bodypart);
 	#if defined SAMPAC_OnPlayerTakeDamage
-		return SAMPAC_OnPlayerTakeDamage(playerid, issuerid, amount, weaponid);
+		return SAMPAC_OnPlayerTakeDamage(playerid, issuerid, amount, weaponid, bodypart);
 	#else
 		return 1;
 	#endif
 }
 
 #if defined SAMPAC_OnPlayerTakeDamage
-	forward SAMPAC_OnPlayerTakeDamage(playerid, issuerid, Float: amount, weaponid);
+	forward SAMPAC_OnPlayerTakeDamage(playerid, issuerid, Float: amount, weaponid, bodypart);
 #endif
 #if defined _ALS_OnPlayerTakeDamage
 	#undef OnPlayerTakeDamage
