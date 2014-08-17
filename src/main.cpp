@@ -58,7 +58,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppPluginData)
 		bIsDetectionEnabled[it] = true; // default enabled.
 
 	logprintf(" _____________________________________________________ ");
-	logprintf("|                ThemAC Loaded - v0.0.0               |");
+	logprintf("|                ThemAC Loaded - v0.0.1               |");
 	logprintf("|              Created by Lorenc and MyU              |");
 	logprintf("|  Thanks Irresistible Gaming hackers for debugging!  |");
 	logprintf("|_____________________________________________________|");
@@ -148,11 +148,13 @@ PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX *amx)
 
 		}
 
-		if (bIsDetectionEnabled[CHEAT_TYPE_HEALTH_HACK])
+		if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY])
 		{
 			if (!strcmp("SetPlayerHealth", GETENTRYNAME(hdr, func)))
 				func->address = (ucell)CFunctionHooks::HookedSetPlayerHealth;
 
+			if (!strcmp("SetPlayerArmour", GETENTRYNAME(hdr, func)))
+				func->address = (ucell)CFunctionHooks::HookedSetPlayerArmour;
 		}
 
 	}

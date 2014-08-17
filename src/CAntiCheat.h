@@ -48,7 +48,7 @@ enum eCheatType {
 	CHEAT_TYPE_PING_LIMIT,
 	CHEAT_TYPE_SPEED_HACK,
 	CHEAT_TYPE_JETPACK,
-	CHEAT_TYPE_HEALTH_HACK
+	CHEAT_TYPE_IMMUNITY
 };
 extern bool bIsDetectionEnabled[MAX_DETECTIONS];
 
@@ -80,6 +80,9 @@ struct ePlayerData {
 	float fHealth;
 	bool bHealthSynced;
 	int iHealthFailCount;
+
+	float fArmour;
+	bool bArmourSynced;
 };
 
 namespace CAntiCheat {

@@ -58,7 +58,7 @@ void CAntiCheat::Tick()
 		p->second->iState = CPlayer::GetState(p->first) ; // Save State for Later processing.
 
 		// Health Hack/Armour Hack
-		if (bIsDetectionEnabled[CHEAT_TYPE_HEALTH_HACK]) {
+		if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY]) {
 			CAntiCheat::HealthHackCheck(p->second->iPlayerID);
 		}
 
@@ -436,7 +436,7 @@ bool CAntiCheat::HealthHackCheck(PLAYERID playerID)
 
 		if (currentHealthInt > 100 || currentHealthInt < 0)
 		{
-			OnDetect(player, CHEAT_TYPE_HEALTH_HACK, "\0", playerID);
+			OnDetect(player, CHEAT_TYPE_IMMUNITY, "\0", playerID);
 			return true;
 		}
 	}

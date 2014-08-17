@@ -48,7 +48,7 @@ namespace CallbackHooks
 	bool OnPlayerUpdate(int playerid);
 	bool OnPlayerKeyStateChange(int playerid, int newkeys, int oldkeys);
 	bool OnPlayerRequestClass(int playerid, int classid);
-	bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid);
+	bool OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart);
 }
 
 #endif

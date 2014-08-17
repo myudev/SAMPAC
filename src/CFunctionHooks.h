@@ -44,6 +44,7 @@ namespace CFunctionHooks
 	cell AMX_NATIVE_CALL HookedSetPlayerSpecialAction(AMX* amx, cell* params);
 
 	cell AMX_NATIVE_CALL HookedSetPlayerHealth(AMX* amx, cell* params);
+	cell AMX_NATIVE_CALL HookedSetPlayerArmour(AMX* amx, cell* params);
 };
 
 #endif

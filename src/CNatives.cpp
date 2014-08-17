@@ -60,7 +60,7 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_SetTickRate(AMX *amx, cell *params)
 
 	int iTicks = params[1];
 	if ( iTicks < 50 || iTicks >= INT_MAX )
-		return logprintf("[SAMPAC:] SetTickRate: Can't set Tickrate (Min: 50, Max: %d)", INT_MAX), 1;
+		return logprintf("[SAMPAC]: SetTickRate: Can't set Tickrate (Min: 50, Max: %d)", INT_MAX), 1;
 	set.g_iTicksMax = iTicks;
 	return 1;
 }
@@ -72,7 +72,7 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_SetDetectionState(AMX *amx, cell *params)
 	int iDetection = params[1];
 	bool bState = !!params[2];
 	if ( iDetection < 1 || iDetection > MAX_DETECTIONS )
-		return logprintf("[SAMPAC:] SetDetectionState: Can't set State of unknown Detection (Min: 0, Max: %d)", MAX_DETECTIONS), 1;
+		return logprintf("[SAMPAC]: SetDetectionState: Can't set State of unknown Detection (Min: 0, Max: %d)", MAX_DETECTIONS), 1;
 
 	bIsDetectionEnabled[iDetection] = bState;
 
@@ -156,15 +156,16 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_CallbackHook(AMX *amx, cell *params)
 		}
 		case SAMPAC_OPTD:
 		{							
-			CHECK_PARAMS(5, "SAMPAC_CallbackHook");
+			CHECK_PARAMS(6, "SAMPAC_CallbackHook");
 
-			cell *playerid = NULL, *issuerid = NULL, *amount = NULL, *weaponid = NULL;
+			cell *playerid = NULL, *issuerid = NULL, *amount = NULL, *weaponid = NULL, *bodypart = NULL;
 			amx_GetAddr(amx, params[2], &playerid);
 			amx_GetAddr(amx, params[3], &issuerid);
 			amx_GetAddr(amx, params[4], &amount);
 			amx_GetAddr(amx, params[5], &weaponid);
+			amx_GetAddr(amx, params[6], &bodypart);
 
-			return static_cast<cell>(CallbackHooks::OnPlayerTakeDamage(static_cast<int>(*playerid), static_cast<int>(*issuerid), static_cast<float>(*amount), static_cast<int>(*weaponid)));
+			return static_cast<cell>(CallbackHooks::OnPlayerTakeDamage(static_cast<int>(*playerid), static_cast<int>(*issuerid), static_cast<float>(*amount), static_cast<int>(*weaponid), static_cast<int>(*bodypart)));
 		}
 	}
 	return 0;
@@ -176,7 +177,7 @@ cell AMX_NATIVE_CALL CNatives::SAMPAC_SetServerPingLimit(AMX *amx, cell *params)
 
 	int iTicks = params[1];
 	if (iTicks < 50 || iTicks >= MAX_PING)
-		return logprintf("[SAMPAC:] SetServerPingLimit: Can't set Tickrate (Min: 50, Max: %d)", 0xFFFF), 1;
+		return logprintf("[SAMPAC]: SetServerPingLimit: Can't set Tickrate (Min: 50, Max: %d)", 0xFFFF), 1;
 
 	set.g_iTicksMax = iTicks;
 	return 1;

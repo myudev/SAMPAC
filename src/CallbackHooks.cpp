@@ -51,6 +51,14 @@ bool CallbackHooks::OnPlayerStateChange(int playerid, int newstate, int oldstate
 	if (!CPlayer::IsNPC(playerid)) {
 		CAntiCheat::CarWarpCheck(playerid, newstate);
 		CAntiCheat::WeaponHackStateFix(playerid, newstate);
+
+		// Why hook OnPlayerSpawn...?
+		if (newstate == PLAYER_STATE_SPAWNED) {
+			ePlayerData *player;
+			if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) {
+				player->fHealth = 100.0; // Default
+			}
+		}
 		return true;
 	}
 	return true;
@@ -100,12 +108,12 @@ bool CallbackHooks::OnPlayerRequestClass(int playerid, int classid)
 	return true;
 }
 
-bool CallbackHooks::OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid)
+bool CallbackHooks::OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
 {
 	if (!CPlayer::IsNPC(playerid)) {
 		ePlayerData *player;
 		if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) {
-			if (bIsDetectionEnabled[CHEAT_TYPE_HEALTH_HACK]) {
+			if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY]) {
 				if ((player->fHealth -= amount) < 0.0)
 					player->fHealth = 0.0;
 			}

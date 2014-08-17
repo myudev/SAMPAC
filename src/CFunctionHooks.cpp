@@ -209,3 +209,18 @@ cell AMX_NATIVE_CALL CFunctionHooks::HookedSetPlayerHealth(AMX* amx, cell* param
 	player->fHealth = fHealth;
 	return sampgdk_SetPlayerHealth(playerID, fHealth);
 }
+
+cell AMX_NATIVE_CALL CFunctionHooks::HookedSetPlayerArmour(AMX* amx, cell* params)
+{
+	PLAYERID playerID = (PLAYERID)params[1];
+	float	 fArmour = (float)params[2];
+	ePlayerData *player;
+	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) return NULL;
+
+	if (fArmour > 99.0) fArmour = 99.0;
+	if (fArmour < 0.0) fArmour = 0.0;
+
+	player->bArmourSynced = false;
+	player->fArmour = fArmour;
+	return sampgdk_SetPlayerHealth(playerID, fArmour);
+}
