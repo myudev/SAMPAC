@@ -103,6 +103,8 @@ void CSampServer::TryInitzializeSAMP()
 	}
 	else { i_SAMPVersion = INVALID_VERSION; }
 
+	i_SAMPVersion = INVALID_VERSION; // Because regardless it's still crashy...
+	
 	/* Only 0.3z atm, since the RPC's only change at every X Client Release we don't need own ids for every server version */
 	if ( bIsMajorZVersion )
 	{
