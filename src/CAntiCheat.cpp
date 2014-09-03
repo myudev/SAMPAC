@@ -396,8 +396,8 @@ bool CAntiCheat::HealthHackCheck(PLAYERID playerID)
 
 	float currentHealth = CPlayer::GetHealth(playerID);
 
-	int currentHealthInt = (int)roundf(currentHealth);
-	int healthShouldBeInt = (int)roundf(player->fHealth);
+	int currentHealthInt = (int)floor(currentHealth);
+	int healthShouldBeInt = (int)floor(player->fHealth);
 
 	player->fHealth = currentHealth;
 

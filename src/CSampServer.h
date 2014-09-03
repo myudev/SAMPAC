@@ -455,6 +455,10 @@ class CNetGame
 struct RPCS {
 	int RPC_SET_POS;
 	int RPC_SET_VELOCITY;
+	int RPC_SET_HEALTH;
+	int RPC_GIVE_MONEY;
+	int RPC_RESET_MONEY;
+	int RPC_RESET_WEAPONS;
 };
 
 namespace CSampServer {

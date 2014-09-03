@@ -53,7 +53,7 @@ void CSampServer::TryInitzializeSAMP()
 		#define ADDR_CNETGAME_03ZR3	(0x4F339C)	
 
 		#define ADDR_VERSION_03ZR4	(0x4B1E14)
-		#define ADDR_CNETGAME_03ZR4	(0x4F33A0)	
+		#define ADDR_CNETGAME_03ZR4	(0x4F339C)	
 	#else
 		#define ADDR_VERSION_03Z	(0x814F973)
 		#define ADDR_CNETGAME_03Z	(0x819A564)
@@ -102,14 +102,16 @@ void CSampServer::TryInitzializeSAMP()
 		bIsMajorZVersion = true;
 	}
 	else { i_SAMPVersion = INVALID_VERSION; }
-
-	i_SAMPVersion = INVALID_VERSION; // Because regardless it's still crashy...
 	
 	/* Only 0.3z atm, since the RPC's only change at every X Client Release we don't need own ids for every server version */
 	if ( bIsMajorZVersion )
 	{
 		rpcIDS.RPC_SET_POS = 12;
 		rpcIDS.RPC_SET_VELOCITY = 90;
+		rpcIDS.RPC_SET_HEALTH = 14;
+		rpcIDS.RPC_GIVE_MONEY = 18;
+		rpcIDS.RPC_RESET_MONEY = 20;
+		rpcIDS.RPC_RESET_WEAPONS = 21;
 	}
 
 	//logprintf("%d = %d", i_SAMPVersion, INVALID_VERSION);
@@ -142,6 +144,6 @@ CSAMPPlayer* CSampServer::GetCPlayer(PLAYERID playerID)
 	if ( !SAMP_IS_VALID_PLAYERID(playerID) ) return NULL;
 	if ( pServer == NULL )					 return NULL;
 	if ( pServer->pPlayerPool == NULL )      return NULL;
-	
+
 	return pServer->pPlayerPool->pPlayer[playerID];
 }
