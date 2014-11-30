@@ -50,8 +50,10 @@ void CAntiCheat::Init()
 // Invoked by ProcessTick
 void CAntiCheat::Tick()
 {
-	//logprintf("CAntiCheat::Tick()");
+	int iTime = (int)time(NULL); // Store time in a variable once
 	Vec3 tVec; // Temporary 3D Vector
+
+	//logprintf("CAntiCheat::Tick()");
 	for (boost::unordered_map<PLAYERID, ePlayerData*>::iterator p = p_PlayerList.begin(); p != p_PlayerList.end(); ++p)
 	{
 		p->second->iPlayerID = p->first; // Bug fix
@@ -59,7 +61,8 @@ void CAntiCheat::Tick()
 
 		// Health Hack/Armour Hack
 		if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY]) {
-			CAntiCheat::HealthHackCheck(p->second->iPlayerID);
+			CAntiCheat::HealthHackCheck(p->second->iPlayerID, iTime);
+			CAntiCheat::ArmourHackCheck(p->second->iPlayerID, iTime);
 		}
 
 		// Anti-Weapon Hack
@@ -172,7 +175,8 @@ bool CAntiCheat::AddPlayer(PLAYERID playerID)
 	p_PlayerData.iPlayerID = playerID;
 	p_PlayerData.bHasPermissionToSpectate = false; // shall we ?
 	p_PlayerData.iSelectedClass = 0;
-	p_PlayerData.iHealthFailCount = 0;
+	p_PlayerData.pHealth.iUpdateFail = 0;
+	p_PlayerData.pArmour.iUpdateFail = 0;
 	ResetPlayerServerWeapons(p_PlayerData);
 
 	if (p == p_PlayerList.end())
@@ -385,60 +389,132 @@ bool CAntiCheat::WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW)
 	return true;
 }
 
-bool CAntiCheat::HealthHackCheck(PLAYERID playerID)
+bool CAntiCheat::HealthHackCheck(PLAYERID playerID, int iTime)
 {
 	ePlayerData *player;
 	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL) 
 		return false;
-
-	if (player->iState == PLAYER_STATE_SPECTATING || player->iState == PLAYER_STATE_WASTED) 
-		return false;
-
-	float currentHealth = CPlayer::GetHealth(playerID);
-
-	int currentHealthInt = (int)floor(currentHealth);
-	int healthShouldBeInt = (int)floor(player->fHealth);
-
-	player->fHealth = currentHealth;
-
-	if (currentHealthInt == healthShouldBeInt) player->bHealthSynced = true;
-
-	if (!player->bHealthSynced)
+	
+	if (iTime > player->pHealth.iUpdateTime)
 	{
-		if (currentHealthInt > healthShouldBeInt)
+		float currentHealth = CPlayer::GetHealth(playerID);
+
+		int currentHealthInt = (int)floor(currentHealth);
+		int healthShouldBeInt = (int)floor(player->pHealth.fPoints);
+		player->pHealth.fCurrentPoints = currentHealth; // can be removed, just for debug
+
+		if (currentHealthInt == healthShouldBeInt)
+			player->pHealth.bSynced = true;
+
+		logprintf("[health] current %f | %d - should be %f | %d\n", currentHealth,currentHealthInt, player->pHealth.fPoints, healthShouldBeInt );
+		if (!player->pHealth.bSynced)
 		{
-			switch (++player->iHealthFailCount)
+			if (currentHealthInt > healthShouldBeInt)
 			{
-				case 15: case 30:
+				switch (player->pHealth.iUpdateFail++)
 				{
-					logprintf("[AC] %d Health Desynced For %ds Attempting To Resync %d/%d", playerID, player->iHealthFailCount, currentHealthInt, healthShouldBeInt);//warn the admins about players health being desynched, this is a custom function, don't complain when it doesn't work for you
-					CPlayer::SetHealth(playerID, player->fHealth);//try to set the players health to what it should be
+					case 30: case 45:
+					{
+						logprintf("[health] Player desynced, retrying %d (fails %d)\n", playerID, player->pHealth.iUpdateFail);
+						CPlayer::SetHealth(playerID, player->pHealth.fPoints);
+					}
+					case 60:
+					{
+						sampgdk_Kick(playerID);
+						logprintf("[health] Too fucking desynced, bye %d.", playerID);
+						return 1;
+					}
 				}
-				/*case 60:
-				{					
-					TimeOut(playerid, "Health Desynced For Over 1min");//if they don't resynch their health for x then they probably won't ever, just make them rejoin
-					return 1;
-				}*/
+				logprintf("[health] Desync Check %d - fail %d\n", playerID, player->pHealth.iUpdateFail);
 			}
 		}
+		else
+		{
+			player->pHealth.iUpdateFail = 0;
+
+			if (healthShouldBeInt > currentHealthInt)
+				player->pHealth.fPoints = currentHealth;
+
+			if (currentHealthInt > healthShouldBeInt && currentHealthInt <= 255 && currentHealthInt > 0)
+				CPlayer::SetHealth(playerID, player->pHealth.fPoints);
+			
+			currentHealthInt = (int)floor(currentHealth);
+			healthShouldBeInt = (int)floor(player->pHealth.fPoints);
+
+			if (currentHealthInt != healthShouldBeInt)
+			{
+				logprintf("[health] Invalid Health: %f",currentHealth);
+				OnDetect(player, CHEAT_TYPE_IMMUNITY, "health:%f:%f", currentHealthInt, healthShouldBeInt);
+				return true;
+			}
+		}
+
+		player->pHealth.iUpdateTime = iTime + 1;
 	}
-	else
+	return false;
+}
+
+bool CAntiCheat::ArmourHackCheck(PLAYERID playerID, int iTime)
+{
+	ePlayerData *player;
+	if ((player = CAntiCheat::GetPlayerByID(playerID)) == NULL)
+		return false;
+
+	if (iTime > player->pArmour.iUpdateTime)
 	{
-		player->iHealthFailCount = 0;
-		if (healthShouldBeInt > currentHealthInt)// if their health has dropped and they are synched
-			player->fHealth = currentHealth;
+		float currentArmour = CPlayer::GetArmour(playerID);
 
-		if (currentHealthInt > healthShouldBeInt && currentHealthInt <= 100 && currentHealthInt  > 0)
+		int currentArmourInt = (int)floor(currentArmour);
+		int ArmourShouldBeInt = (int)floor(player->pArmour.fPoints);
+		player->pArmour.fCurrentPoints = currentArmour; // can be removed, just for debug
+
+		if (currentArmourInt == ArmourShouldBeInt)
+			player->pArmour.bSynced = true;
+
+		logprintf("[Armour] current %f | %d - should be %f | %d\n", currentArmour, currentArmourInt, player->pArmour.fPoints, ArmourShouldBeInt);
+		if (!player->pArmour.bSynced)
 		{
-			logprintf("[AC] %d Health Desynced For %ds Attempting To Resync %d/%d", playerID, player->iHealthFailCount, currentHealthInt, healthShouldBeInt);
-			CPlayer::SetHealth(playerID, (player->fHealth = currentHealth));
+			if (currentArmourInt > ArmourShouldBeInt)
+			{
+				switch (player->pArmour.iUpdateFail++)
+				{
+				case 30: case 45:
+				{
+					logprintf("[Armour] Player desynced, retrying %d (fails %d)\n", playerID, player->pArmour.iUpdateFail);
+					CPlayer::SetArmour(playerID, player->pArmour.fPoints);
+				}
+				case 60:
+				{
+					sampgdk_Kick(playerID);
+					logprintf("[Armour] Too fucking desynced, bye %d.", playerID);
+					return 1;
+				}
+				}
+				logprintf("[Armour] Desync Check %d - fail %d\n", playerID, player->pArmour.iUpdateFail);
+			}
+		}
+		else
+		{
+			player->pArmour.iUpdateFail = 0;
+
+			if (ArmourShouldBeInt > currentArmourInt)
+				player->pArmour.fPoints = currentArmour;
+
+			if (currentArmourInt > ArmourShouldBeInt && currentArmourInt <= 255 && currentArmourInt > 0)
+				CPlayer::SetArmour(playerID, player->pArmour.fPoints);
+
+			currentArmourInt = (int)floor(currentArmour);
+			ArmourShouldBeInt = (int)floor(player->pArmour.fPoints);
+
+			if (currentArmourInt != ArmourShouldBeInt)
+			{
+				logprintf("[Armour] Invalid Armour: %f",currentArmour);
+				OnDetect(player, CHEAT_TYPE_IMMUNITY, "armour:%f:%f", currentArmourInt, ArmourShouldBeInt);
+				return true;
+			}
 		}
 
-		if (currentHealthInt > 100 || currentHealthInt < 0)
-		{
-			OnDetect(player, CHEAT_TYPE_IMMUNITY, "\0", playerID);
-			return true;
-		}
+		player->pArmour.iUpdateTime = iTime + 1;
 	}
 	return false;
 }

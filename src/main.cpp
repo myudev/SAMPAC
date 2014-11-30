@@ -182,3 +182,9 @@ PLUGIN_EXPORT void PLUGIN_CALL ProcessTick()
 	}
 	g_iTicksDone++;
 }
+
+PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerConnect(int playerid)
+{
+	logprintf("connection");
+	return true;
+}

@@ -52,6 +52,14 @@ enum eCheatType {
 };
 extern bool bIsDetectionEnabled[MAX_DETECTIONS];
 
+struct ePlayerHitPointsData {
+	float fPoints;
+	float fCurrentPoints;
+	int iUpdateTime;
+	int iUpdateFail;
+	bool bSynced;
+};
+
 struct ePlayerData {
 	int iPlayerID;
 	bool bHasWeapon[ MAX_WEAPS ];	
@@ -77,12 +85,8 @@ struct ePlayerData {
 	Vec3 vLastPickupPos;
 	Vec3 vLastValidPos;
 
-	float fHealth;
-	bool bHealthSynced;
-	int iHealthFailCount;
-
-	float fArmour;
-	bool bArmourSynced;
+	ePlayerHitPointsData pHealth;
+	ePlayerHitPointsData pArmour;
 };
 
 namespace CAntiCheat {
@@ -99,7 +103,8 @@ namespace CAntiCheat {
 	void	RemoteJackingCheck(PLAYERID playerID);
 	void	WeaponHackCheck(PLAYERID playerID);
 	bool	WeaponHackStateFix(PLAYERID playerID, NEWSTATE stateNEW);
-	bool	HealthHackCheck(PLAYERID playerID);
+	bool	HealthHackCheck(PLAYERID playerID, int iTime);
+	bool	ArmourHackCheck(PLAYERID playerID, int iTime);
 
 	ePlayerData* GetPlayerByID(PLAYERID playerID);
 };

@@ -40,6 +40,7 @@ namespace CPlayer {
 	bool IsInVehicle		(PLAYERID playerID);
 
 	void SetMoney			(PLAYERID playerID, int iMoney);
+	void SetTeam			(PLAYERID playerID, int iTeam);
 	int GetMoney			(PLAYERID playerID);
 	int GetPing				(PLAYERID playerID);
 	int GetState			(PLAYERID playerID);
@@ -48,7 +49,9 @@ namespace CPlayer {
 	int GetSpecialAction	(PLAYERID playerID);
 
 	bool SetHealth			(PLAYERID playerID, float fHealth);
+	bool SetArmour			(PLAYERID playerID, float fArmour);
 	float GetHealth			(PLAYERID playerID);
+	float GetArmour			(PLAYERID playerID);
 
 	// Settings Data
 	void SetPosition		(PLAYERID playerID, float fX, float fY, float fZ);

@@ -103,6 +103,10 @@ void CSampServer::TryInitzializeSAMP()
 	}
 	else { i_SAMPVersion = INVALID_VERSION; }
 	
+	// TESTING WITH GDK, BETTER FOR DEBUG.
+	i_SAMPVersion = INVALID_VERSION;
+	bIsMajorZVersion = false;
+
 	/* Only 0.3z atm, since the RPC's only change at every X Client Release we don't need own ids for every server version */
 	if ( bIsMajorZVersion )
 	{

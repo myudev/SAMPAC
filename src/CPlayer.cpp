@@ -280,11 +280,24 @@ bool CPlayer::SetHealth(PLAYERID playerID, float fHealth)
 		bs.Write ( fHealth );
 		PlayerID playerId = CSampServer::pServer->pRakServer->GetPlayerIDFromIndex ( playerID );
 		if ( playerId.binaryAddress != 0xFFFFFFFF )
-			CSampServer::pServer->pRakServer->RPC ( &CSampServer::rpcIDS.RPC_SET_POS, &bs, HIGH_PRIORITY, RELIABLE_ORDERED, 2, playerId, 0, 0 );
+			CSampServer::pServer->pRakServer->RPC ( &CSampServer::rpcIDS.RPC_SET_HEALTH, &bs, HIGH_PRIORITY, RELIABLE_ORDERED, 2, playerId, 0, 0 );
 		return false;
 	}
 	else { // Fallback SAMPGDK :'(
 		return sampgdk_SetPlayerHealth(playerID, fHealth);
+	}
+}
+
+bool CPlayer::SetArmour(PLAYERID playerID, float fArmour)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		/*
+			INSERT CODE
+		*/
+		return false;
+	}
+	else { // Fallback SAMPGDK :'(
+		return sampgdk_SetPlayerArmour(playerID, fArmour);
 	}
 }
 
@@ -303,4 +316,34 @@ float CPlayer::GetHealth(PLAYERID playerID)
 		float fHealth;
 		return sampgdk_GetPlayerHealth(playerID, &fHealth) ? fHealth : 0.0f;
 	}
+}
+
+float CPlayer::GetArmour(PLAYERID playerID)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		CSAMPPlayer *player;
+		if ((player = CSampServer::GetCPlayer(playerID)) == NULL)
+		{
+			STURCT_INVALID("CPlayer::GetArmour");
+			return 0;
+		}
+		return player->syncData.byteArmour;
+	}
+	else { // Fallback SAMPGDK :'(
+		float fArmour;
+		return sampgdk_GetPlayerArmour(playerID, &fArmour) ? fArmour : 0.0f;
+	}
+}
+
+void CPlayer::SetTeam(PLAYERID playerID, int iTeam)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		/*
+			INSERT CODE
+		*/
+	}
+	else {
+		sampgdk_SetPlayerTeam(playerID, iTeam);
+	}
+	
 }

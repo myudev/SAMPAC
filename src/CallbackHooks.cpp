@@ -29,6 +29,8 @@
 #include "CAntiCheat.h"
 #include "CPlayer.h"
 
+#include <time.h>
+
 bool CallbackHooks::OnPlayerConnect(int playerid)
 {
 	if (!CPlayer::IsNPC(playerid))
@@ -56,7 +58,11 @@ bool CallbackHooks::OnPlayerStateChange(int playerid, int newstate, int oldstate
 		if (newstate == PLAYER_STATE_SPAWNED) {
 			ePlayerData *player;
 			if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) {
-				player->fHealth = 100.0; // Default
+				CPlayer::SetHealth(playerid, 100.0f);
+				CPlayer::SetArmour(playerid, 0.0f);
+
+				if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY])
+					CPlayer::SetTeam(playerid, 128); // Must ensure everyone can't shoot eachother for anti-HH/AH
 			}
 		}
 		return true;
@@ -110,15 +116,59 @@ bool CallbackHooks::OnPlayerRequestClass(int playerid, int classid)
 
 bool CallbackHooks::OnPlayerTakeDamage(int playerid, int issuerid, float amount, int weaponid, int bodypart)
 {
-	if (!CPlayer::IsNPC(playerid)) {
-		ePlayerData *player;
-		if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) {
-			if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY]) {
-				if ((player->fHealth -= amount) < 0.0)
-					player->fHealth = 0.0;
+	logprintf("OnPlayerTakeDamage(%d, %d, %f, %d, %d)", playerid, issuerid, amount, weaponid, bodypart);
+	if (!CPlayer::IsNPC(playerid)) 
+	{
+		if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY])
+		{
+			ePlayerData *player;
+			if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) 
+			{
+				float
+					fHealth = player->pHealth.fPoints, //CPlayer::GetHealth(playerid),
+					fArmour = player->pHealth.fPoints  //CPlayer::GetArmour(playerid)
+				;
+
+				if (issuerid != INVALID_PLAYER_ID)
+				{
+					float tmp;
+					float tmp_amount = amount;
+
+					if (fArmour) {
+						if ((tmp = fArmour - tmp_amount) < 0.0)  {
+							tmp_amount -= fArmour;
+							fArmour = 0.0;
+						}
+						else  {
+							fArmour = tmp;
+							tmp_amount = 0.0;
+						}
+					}
+
+					if ((fHealth -= tmp_amount) < 0.0) {
+						fHealth = 0.0;
+					}
+					
+					CPlayer::SetHealth(playerid, fHealth);
+					CPlayer::SetArmour(playerid, fArmour);
+
+					if (fHealth <= 0.0 && player->iState != PLAYER_STATE_WASTED) {
+						// Call death server-sided
+						logprintf("[ACDEATH] %d has been killed by %d (reason %d)", playerid, issuerid, weaponid);
+					}
+				}
+				else
+				{
+					if ((player->pHealth.fPoints -= amount) < 0.0)
+						player->pHealth.fPoints = 0.0;
+
+					if ((fHealth - amount) <= 0.0 && player->iState != PLAYER_STATE_WASTED) {
+						logprintf("[ACDEATH] %d has been killed themselves.", playerid);
+						// Call death server-sided
+					}
+				}
 			}
 		}
-		return true;
 	}
-	return true;
+	return false;
 }
