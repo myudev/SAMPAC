@@ -48,23 +48,30 @@ bool CallbackHooks::OnPlayerDisconnect(int playerid, int reason)
 	return true;
 }
 
+bool CallbackHooks::OnPlayerSpawn(int playerid)
+{
+	if (!CPlayer::IsNPC(playerid))
+	{
+		ePlayerData *player;
+		if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) {
+			player->pHealth.fPoints = 100.0f;
+			player->pArmour.fPoints = 0.0f;
+			
+			if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY])
+				CPlayer::SetTeam(playerid, 128); // Must ensure everyone can't shoot eachother for anti-HH/AH
+
+			player->bSpawned = true;
+		}
+		return true;
+	}
+	return true;
+}
+
 bool CallbackHooks::OnPlayerStateChange(int playerid, int newstate, int oldstate)
 {
 	if (!CPlayer::IsNPC(playerid)) {
 		CAntiCheat::CarWarpCheck(playerid, newstate);
 		CAntiCheat::WeaponHackStateFix(playerid, newstate);
-
-		// Why hook OnPlayerSpawn...?
-		if (newstate == PLAYER_STATE_SPAWNED) {
-			ePlayerData *player;
-			if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) {
-				CPlayer::SetHealth(playerid, 100.0f);
-				CPlayer::SetArmour(playerid, 0.0f);
-
-				if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY])
-					CPlayer::SetTeam(playerid, 128); // Must ensure everyone can't shoot eachother for anti-HH/AH
-			}
-		}
 		return true;
 	}
 	return true;
@@ -82,6 +89,10 @@ bool CallbackHooks::OnPlayerPickUpPickup(int playerid, int pickupid)
 bool CallbackHooks::OnPlayerDeath(int playerid, int killerid, int reason)
 {
 	if (!CPlayer::IsNPC(playerid)) {
+		ePlayerData *player;
+		if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) {
+			player->bSpawned = false;
+		}
 		CAntiCheat::FakeKillCheck(playerid);
 		return true;
 	}
@@ -91,6 +102,18 @@ bool CallbackHooks::OnPlayerDeath(int playerid, int killerid, int reason)
 bool CallbackHooks::OnPlayerUpdate(int playerid)
 {
 	if (!CPlayer::IsNPC(playerid)) {
+		int iTime = (int)time(NULL); // Store time in a variable once
+
+		ePlayerData *player;
+		if ((player = CAntiCheat::GetPlayerByID(playerid)) != NULL) {
+			// Health Hack/Armour Hack
+			if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY]) {
+				if (player->bSpawned) {
+					CAntiCheat::HealthHackCheck(player->iPlayerID, iTime);
+					CAntiCheat::ArmourHackCheck(player->iPlayerID, iTime);
+				}
+			}
+		}
 		return true;
 	}
 	return true;
@@ -152,7 +175,7 @@ bool CallbackHooks::OnPlayerTakeDamage(int playerid, int issuerid, float amount,
 					CPlayer::SetHealth(playerid, fHealth);
 					CPlayer::SetArmour(playerid, fArmour);
 
-					if (fHealth <= 0.0 && player->iState != PLAYER_STATE_WASTED) {
+					if (fHealth <= 0.0 && player->bSpawned) {
 						// Call death server-sided
 						logprintf("[ACDEATH] %d has been killed by %d (reason %d)", playerid, issuerid, weaponid);
 					}
@@ -162,7 +185,7 @@ bool CallbackHooks::OnPlayerTakeDamage(int playerid, int issuerid, float amount,
 					if ((player->pHealth.fPoints -= amount) < 0.0)
 						player->pHealth.fPoints = 0.0;
 
-					if ((fHealth - amount) <= 0.0 && player->iState != PLAYER_STATE_WASTED) {
+					if ((fHealth - amount) <= 0.0 && player->bSpawned) {
 						logprintf("[ACDEATH] %d has been killed themselves.", playerid);
 						// Call death server-sided
 					}

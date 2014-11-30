@@ -194,6 +194,18 @@ void CPlayer::SetMoney ( PLAYERID playerID, int iMoney )
 	}
 }
 
+void CPlayer::ResetMoney(PLAYERID playerID)
+{
+	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {
+		/*
+			INSERT CODE
+		*/
+	}
+	else { // Fallback SAMPGDK :'(
+		sampgdk_ResetPlayerMoney(playerID);
+	}
+}
+
 int CPlayer::GetState ( PLAYERID playerID ) 
 {
 	if (CSampServer::i_SAMPVersion != INVALID_VERSION) {

@@ -41,6 +41,7 @@ namespace CPlayer {
 
 	void SetMoney			(PLAYERID playerID, int iMoney);
 	void SetTeam			(PLAYERID playerID, int iTeam);
+	void ResetMoney			(PLAYERID playerID);
 	int GetMoney			(PLAYERID playerID);
 	int GetPing				(PLAYERID playerID);
 	int GetState			(PLAYERID playerID);

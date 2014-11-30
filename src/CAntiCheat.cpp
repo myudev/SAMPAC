@@ -50,7 +50,6 @@ void CAntiCheat::Init()
 // Invoked by ProcessTick
 void CAntiCheat::Tick()
 {
-	int iTime = (int)time(NULL); // Store time in a variable once
 	Vec3 tVec; // Temporary 3D Vector
 
 	//logprintf("CAntiCheat::Tick()");
@@ -58,12 +57,6 @@ void CAntiCheat::Tick()
 	{
 		p->second->iPlayerID = p->first; // Bug fix
 		p->second->iState = CPlayer::GetState(p->first) ; // Save State for Later processing.
-
-		// Health Hack/Armour Hack
-		if (bIsDetectionEnabled[CHEAT_TYPE_IMMUNITY]) {
-			CAntiCheat::HealthHackCheck(p->second->iPlayerID, iTime);
-			CAntiCheat::ArmourHackCheck(p->second->iPlayerID, iTime);
-		}
 
 		// Anti-Weapon Hack
 		if (bIsDetectionEnabled[CHEAT_TYPE_WEAPON]) {
@@ -172,17 +165,24 @@ bool CAntiCheat::AddPlayer(PLAYERID playerID)
 
 	ePlayerData p_PlayerData;
 
+	// Initial Functions
+	CPlayer::ResetMoney(playerID);
+
+	// Initial Variables
 	p_PlayerData.iPlayerID = playerID;
 	p_PlayerData.bHasPermissionToSpectate = false; // shall we ?
 	p_PlayerData.iSelectedClass = 0;
 	p_PlayerData.pHealth.iUpdateFail = 0;
 	p_PlayerData.pArmour.iUpdateFail = 0;
-	ResetPlayerServerWeapons(p_PlayerData);
+	p_PlayerData.bSpawned = false;
+	p_PlayerData.iPlayerMoney = 0;
+
+	for (int i = 0; i < MAX_WEAPS; i++) 
+		p_PlayerData.bHasWeapon[i] = false;
 
 	if (p == p_PlayerList.end())
-	{
 		p_PlayerList.insert(std::make_pair(playerID, &p_PlayerData));
-	}
+
 	return true;
 }
 

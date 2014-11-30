@@ -31,9 +31,6 @@
 #define MAX_WEAPS ( 55 )
 #define SAMP_MAX_PLAYERS	( 1000 )
 
-#define ResetPlayerServerWeapons(player) \
-	for (int i = 0; i < MAX_WEAPS; i++) player.bHasWeapon[i] = false;
-
 // TODO: Cleanup
 #define MAX_DETECTIONS 12
 enum eCheatType {
@@ -62,6 +59,7 @@ struct ePlayerHitPointsData {
 
 struct ePlayerData {
 	int iPlayerID;
+	bool bSpawned;
 	bool bHasWeapon[ MAX_WEAPS ];	
 
 	int iPlayerMoney;
