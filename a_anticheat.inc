@@ -66,6 +66,8 @@ forward SAMPAC_OnCheatDetect(playerid, detection, extrainfo[]);
 #define SAMPAC_OPKSC 				( 5 )
 #define SAMPAC_OPRC  				( 6 )
 #define SAMPAC_OPTD  				( 7 )
+#define SAMPAC_OPS 					( 8 )
+#define SAMPAC_OPU 					( 9 )
 
 // Hook (OnPlayerConnect)
 
@@ -110,6 +112,50 @@ public OnPlayerDisconnect(playerid, reason)
 	#define _ALS_OnPlayerDisconnect
 #endif
 #define OnPlayerDisconnect SAMPAC_OnPlayerDisconnect
+
+// Hook (OnPlayerSpawn)
+
+public OnPlayerSpawn(playerid)
+{
+	SAMPAC_CallbackHook(SAMPAC_OPS, playerid);
+	#if defined SAMPAC_OnPlayerSpawn
+		return SAMPAC_OnPlayerSpawn(playerid);
+	#else
+		return 1;
+	#endif
+}
+
+#if defined SAMPAC_OnPlayerSpawn
+	forward SAMPAC_OnPlayerSpawn(playerid);
+#endif
+#if defined _ALS_OnPlayerSpawn
+	#undef OnPlayerSpawn
+#else
+	#define _ALS_OnPlayerSpawn
+#endif
+#define OnPlayerSpawn SAMPAC_OnPlayerSpawn
+
+// Hook (OnPlayerUpdate)
+
+public OnPlayerUpdate(playerid)
+{
+	SAMPAC_CallbackHook(SAMPAC_OPU, playerid);
+	#if defined SAMPAC_OnPlayerUpdate
+		return SAMPAC_OnPlayerUpdate(playerid);
+	#else
+		return 1;
+	#endif
+}
+
+#if defined SAMPAC_OnPlayerUpdate
+	forward SAMPAC_OnPlayerUpdate(playerid);
+#endif
+#if defined _ALS_OnPlayerUpdate
+	#undef OnPlayerUpdate
+#else
+	#define _ALS_OnPlayerUpdate
+#endif
+#define OnPlayerUpdate SAMPAC_OnPlayerUpdate
 
 // Hook (OnPlayerStateChange)
 
