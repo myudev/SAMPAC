@@ -1,3 +1,7 @@
+INFORMATION
+======
+This project is basically dead (2 years since last commit) and I do not even recommend using the "structure" as a base it's old it's dusty it's disgusting so please do not fork this >.>
+
 SAMPAC
 ======
 
